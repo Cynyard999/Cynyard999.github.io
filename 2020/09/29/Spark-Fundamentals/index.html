@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="referrer" content="no-referrer" />
+
+    <meta name="author" content="Cynyard Qiu">
+
+
+
+
+
+<title>Spark原理 | Cynyard&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/cloud.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cynyard&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cynyard&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Spark原理</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cynyard Qiu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 29, 2020&nbsp;&nbsp;0:14:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Course/">Course</a>
+                            
+                                <a href="/categories/Course/Spark/">Spark</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Spark原理"><a href="#Spark原理" class="headerlink" title="Spark原理"></a>Spark原理</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><ul>
+<li><p>最热门的大数据计算处理框架</p>
+</li>
+<li><p>多元化的大数据处理体系</p>
+<ul>
+<li><p>SQL</p>
+</li>
+<li><p>Streaming</p>
+</li>
+<li><p>Mllib</p>
+</li>
+</ul>
+</li>
+<li><p>GraphX</p>
+</li>
+<li><p>SCALA面向对象，函数编程，能够像操作本地集合对象一样轻松地操作分布式数据集</p>
+</li>
+<li><p>多种数据源的访问，HDFS，Hbase，Hive</p>
+</li>
+<li><p>运行速度快，内存中对数据进行迭代运行</p>
+</li>
+<li><p>易用性好，ScalaJavaPython</p>
+</li>
+<li><p>通用性强，spark生态圈，一站式解决平台</p>
+</li>
+</ul>
+<h3 id="Scala"><a href="#Scala" class="headerlink" title="Scala"></a>Scala</h3><ul>
+<li><p>多范式的编程语言</p>
+</li>
+<li><p>交互式的语言</p>
+</li>
+<li><p>基于Java发展出来的，兼容现有Java程序，与Hadoop更好的兼容</p>
+</li>
+<li><p>强大的并发行</p>
+</li>
+<li><p>优雅的API</p>
+</li>
+</ul>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><blockquote>
+<p>过去来说，不同场景之间的数据传输并不是无缝共享的，维护成本也高，不同的团队，并且系统的资源不能得到充分的利用</p>
+</blockquote>
+<p>Spark希望用一个软件栈，满足所有的场景需求</p>
+<ul>
+<li><p>批处理，大数据，时效性不强——Hadoop，现在用Spark Core</p>
+</li>
+<li><p>基于历史数据的交互式查询，需要马上返回结果，数十秒到几分钟——Apache，Impala，Dreamel，Drill，现在用Spark SQL</p>
+</li>
+<li><p>实时的数据流的数据处理，连续不断的实时的数据分析，需要在毫秒级别到秒级别——Apache Storm，S4，现在用Spark Streaming（秒级别）Structured Streaming（毫秒级别）</p>
+</li>
+<li><p>对于历史数据的数据挖掘——Mahout（基于MapReduce，现在基于Spark的机器学习算法库），现在用MLlib，</p>
+</li>
+<li><p>图结构数据的处理——Pregel，Hama，现在用GraphX</p>
+</li>
+</ul>
+<h4 id="Spark的广泛应用"><a href="#Spark的广泛应用" class="headerlink" title="Spark的广泛应用"></a>Spark的广泛应用</h4><ul>
+<li><p>yarn链接了spark和Hadoop</p>
+</li>
+<li><p>一站式的解决方法</p>
+</li>
+<li><p>技术人员掌握一种开发框架</p>
+</li>
+</ul>
+<h2 id="2-对比Hadoop"><a href="#2-对比Hadoop" class="headerlink" title="2. 对比Hadoop"></a>2. 对比Hadoop</h2><h3 id="计算框架"><a href="#计算框架" class="headerlink" title="计算框架"></a>计算框架</h3><ul>
+<li><p>Hadoop表达能力有限，只有Map和Reduce函数，两种抽象大大降低了分布式系统的复杂性，但是无法表达更加复杂的业务逻辑</p>
+</li>
+<li><p>Hadoop不管任务多复杂，一定是先做完所有的map操作，并行的，等待全部操作完了，生成中间结果后才能开始Reduce，而且是写在磁盘，还有很大的IO开销</p>
+</li>
+<li><p>Spark继承了mapreduce，但是还提供了很多种不同的其他操作，表达能力更强</p>
+</li>
+<li><p>DAG的任务调度机制，避免数据落地到稳定存储</p>
+</li>
+<li><p>更快，内存计算能够让中间结果缓存到内存，提高了低延迟，特别是迭代运算（反复迭代的存取效率），<strong>不写硬盘不写硬盘不写硬盘</strong></p>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026968505-7bc739c1-6309-4e5f-ad80-e79987088b98.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026984607-98121b3f-c058-4975-8bfa-a007480909c6.png"></p>
+<h3 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h3><ul>
+<li>Spark容错成本低，使用弹性分布数据集RDD，存储在节点内存中的只读性质的数据集，某一部分丢失或者出错可以通过整个数据集的计算流程的血缘关系（即充许基于数据衍生过程）来实现重建</li>
+</ul>
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><ul>
+<li><p>更加通用，spark提供了transformation和action这两大类的多个功能api，还有流计算spark streaming和图计算graphX，mapreduce只提供了map和reduce两种操作</p>
+</li>
+<li><p>Spark提供比Hadoop更上层的API，同样的算法在Spark中实现往往只有Hadoop的十分之一或者一百分之一的长度。</p>
+</li>
+</ul>
+<h3 id="存储框架"><a href="#存储框架" class="headerlink" title="存储框架"></a>存储框架</h3><ul>
+<li>没啥问题</li>
+</ul>
+<h2 id="3-架构"><a href="#3-架构" class="headerlink" title="3. 架构"></a>3. 架构</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600758975796-cc1e79a2-d125-4d6b-a49c-9f5587bc143d.png"></p>
+<h3 id="3-1-高层库"><a href="#3-1-高层库" class="headerlink" title="3. 1 高层库"></a>3. 1 高层库</h3><h4 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h4><ul>
+<li><p>前身是shark，即Hive on Spark，本质上是通过Hive的HQL解析，把HQL翻译成Spark上的RDD操作，然后通过Hive的metadata获取数据库里的表信息，实际HDFS上的数据和文件，会由Shark获取并放到Spark上运算，代码量大，优化维护复杂</p>
+</li>
+<li><p>交互式查询、标准访问接口、兼容Hive</p>
+</li>
+<li><p>允许开发人员直接处理RDD</p>
+</li>
+</ul>
+<h4 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h4><ul>
+<li><p>对实时数据流进行高通量、容错处理的流式处理系统，可以对多种数据源进行Map，Reduce和Join的操作</p>
+</li>
+<li><p>将流式计算分解成一系列短小的批处理作业，都转换为Spark中的RDD，对DStream的操作转换为对RDD的操作</p>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600759848147-f24d546f-e208-4f13-94dc-4ec50de847c7.png"></p>
+<h4 id="Spark-GraphX"><a href="#Spark-GraphX" class="headerlink" title="Spark GraphX"></a>Spark GraphX</h4><ul>
+<li><p>用于图和图并行计算的api，可以认为是GraphLab(C++)和Pregel(C++)在Spark(Scala)上的重写及优化</p>
+</li>
+<li><p>对Graph视图的所有操作，最终都会转换成其关联的Table视图的RDD操作来完成，一个图的计算最终在逻辑上等价于一系列RDD的转换过程</p>
+</li>
+<li><p>两种视图底层共用的物理数据，由RDD[Vertex-Partition]和RDD[EdgePartition]这两个RDD组成</p>
+</li>
+<li><p>图的分布式存储采用点分割模式，由用户指定不同的划分策略</p>
+</li>
+</ul>
+<h4 id="Spark-MLlib"><a href="#Spark-MLlib" class="headerlink" title="Spark MLlib"></a>Spark MLlib</h4><ul>
+<li><p>为解决机器学习开发的库，让一些可能并不了解机器学习的用户也能方便地使用</p>
+</li>
+<li><p>包括分类、回归、聚类和协同过滤等，可扩充</p>
+</li>
+</ul>
+<h3 id="3-2-集群管理"><a href="#3-2-集群管理" class="headerlink" title="3.2 集群管理"></a>3.2 集群管理</h3><h4 id="Standalone-mode"><a href="#Standalone-mode" class="headerlink" title="Standalone mode"></a>Standalone mode</h4><ul>
+<li><p>原生集群管理功能：任务调度，资源分配等</p>
+</li>
+<li><p>提前配置好内存和cpu内核数量的master和worker</p>
+</li>
+</ul>
+<h4 id="Hadoop-Yarn"><a href="#Hadoop-Yarn" class="headerlink" title="Hadoop Yarn"></a>Hadoop Yarn</h4><ul>
+<li>把资源管理和任务管理剥离开，实现了静态资源的分配和动态资源功能</li>
+</ul>
+<h4 id="Apache-Mesos"><a href="#Apache-Mesos" class="headerlink" title="Apache Mesos"></a>Apache Mesos</h4><blockquote>
+<p>Mesos —— 像用一台电脑（一个资源池）一样使用整个数据中心</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://mesos-cn.gitbooks.io/mesos-cn/content/Mesos-Introduction.html">https://mesos-cn.gitbooks.io/mesos-cn/content/Mesos-Introduction.html</a></p>
+<ul>
+<li><p>在分布式计算节点上抽象CPU，memory，storage和其他计算机资源，目的是充分利用数据中心的资源，将集群中的所有机器/节点聚集在一起，为不同的任务分配资源，Mesos就实现了静态资源分配的功能</p>
+</li>
+<li><p>多个框架可以运行在一个集群里面，</p>
+</li>
+</ul>
+<h3 id="3-3-数据存储："><a href="#3-3-数据存储：" class="headerlink" title="3.3 数据存储："></a>3.3 数据存储：</h3><h4 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h4><ul>
+<li>hadoop分布式文件系统</li>
+</ul>
+<h4 id="Hbase"><a href="#Hbase" class="headerlink" title="Hbase"></a>Hbase</h4><ul>
+<li>基于HDFS的非关系型数据库，NoSQL</li>
+</ul>
+<h4 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h4><ul>
+<li><p>基于分布式存储的数据库</p>
+</li>
+<li><p>在关系型数据库和非关系型数据库之间</p>
+</li>
+<li><p>NoSQL数据库中最像关系型数据库的一个</p>
+</li>
+<li><p>功能强大，多种开发语言，完全索引，查询，等</p>
+</li>
+</ul>
+<h4 id="Cassendra"><a href="#Cassendra" class="headerlink" title="Cassendra"></a>Cassendra</h4><ul>
+<li>基于列的分布式数据库，易扩展</li>
+</ul>
+<h2 id="4-部署模式"><a href="#4-部署模式" class="headerlink" title="4. 部署模式"></a>4. 部署模式</h2><h3 id="部署模式"><a href="#部署模式" class="headerlink" title="部署模式"></a>部署模式</h3><ul>
+<li><p>Local模式</p>
+</li>
+<li><p>Cluster模式：真正的集群模式</p>
+</li>
+</ul>
+<h3 id="提交模式"><a href="#提交模式" class="headerlink" title="提交模式"></a>提交模式</h3><ul>
+<li><p>client模式</p>
+</li>
+<li><p>在worker节点启动driver程序运行应用程序，结果返回到client端</p>
+</li>
+<li><p>cluster模式：</p>
+</li>
+<li><p>只有cluster部署模式支持</p>
+</li>
+<li><p>在master上面启动driver程序，结果保存到master上</p>
+</li>
+</ul>
+<h2 id="5-RDD"><a href="#5-RDD" class="headerlink" title="5. RDD"></a>5. RDD</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600760681708-d46fe2b8-928e-4963-af94-f1599e612fed.png"></p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><p>Resilient Distributed Datasets<strong>弹性分布式数据集</strong></p>
+</li>
+<li><p>使得Spark可以用<strong>一致的方式</strong>处理大数据的不同应用场景</p>
+</li>
+<li><p>高度受限的共享内存模型，<strong>要么从外界读入，要么由其他RDD产生</strong></p>
+</li>
+<li><p>创建RDD的一系列转换被记录下来，精确到具体分区的数据恢复</p>
+</li>
+<li><p>解决了不能通过内存共享数据以及反复读写磁盘的问题</p>
+</li>
+</ul>
+<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><ul>
+<li><p>使用程序中的集合创建rdd <code>parallelize()</code></p>
+</li>
+<li><p><code>var rdd = sc.parallelize(data)</code></p>
+</li>
+<li><p>使用本地文件创建 <code>textfile()</code></p>
+</li>
+<li><p>使用hdfs创建 <code>textfile</code></p>
+</li>
+<li><p>基于数据库db创建 </p>
+</li>
+<li><p>基于nosql创建，例如hbase</p>
+</li>
+<li><p>基于数据流，例如socket创建</p>
+</li>
+</ul>
+<h3 id="操作类型"><a href="#操作类型" class="headerlink" title="操作类型"></a>操作类型</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603418337152-3dfd9062-ff78-47c7-817d-dee6c3ae1761.png"></p>
+<h4 id="转换类型操作"><a href="#转换类型操作" class="headerlink" title="转换类型操作"></a>转换类型操作</h4><ul>
+<li><p>只是记录转换的轨迹，不会计算</p>
+</li>
+<li><p>map，filter，groupby，join之类的</p>
+</li>
+<li><p>一次只能针对RDD全集进行转换，不支持选择数据修改，频繁更新少量数据的时候</p>
+</li>
+</ul>
+<h4 id="动作类型操作"><a href="#动作类型操作" class="headerlink" title="动作类型操作"></a>动作类型操作</h4><ul>
+<li>一转换就生成一个新的RDD，经过多次转换过后，最终通过一个动作的操作来触发从头到尾的计算（惰性调用机制</li>
+</ul>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li><p><strong>分区列表：</strong>RDD由一系列partition组成，分区列表记录了数据块所在的分区位置，<strong>partition存储在集群的不同节点，</strong>对于每个RDD，每个分片都会被一个计算任务处理，并且决定并行计算的粒度，用户可以在创建RDD的时候指定RDD的分片个数，如果没有指定，就是默认值，程序分配到的CPU core的个数</p>
+</li>
+<li><p><strong>算子</strong>（函数）是作用在partition上的。Spark中<strong>RDD的计算是以分片为单位的，每个RDD都会</strong>实现compute函数以达到这个目的。compute函数会对迭代器进行复合，不需要保存每次计算的结果</p>
+</li>
+<li><p><strong>依赖</strong>：RDD之间有依赖关系。RDD的每次转换都会生成一个新的RDD，所以RDD之间就会形成类似于流水线一样的前后依赖关系。<strong>在部分分区数据丢失时</strong>，Spark可以通过这个依赖关系重新计算丢失的分区数据，而不是对RDD的所有分区进行重新计算</p>
+</li>
+<li><p><strong>依赖列表</strong>：记录了当前RDD依赖于其他哪些RDD</p>
+</li>
+<li><p><strong>可选：分区器：</strong>作用在K,V格式的RDD上。Spark中实现了两种类型的分片函数，一个是基于哈希的HashPartitioner，另外一个是基于范围的RangePartitioner。只有对于于key-value的RDD，才会有Partitioner，非key-value的RDD的Parititioner的值是None。Partitioner函数不但决定了RDD本身的分片数量，也决定了parent RDD Shuffle输出时的分片数量</p>
+</li>
+<li><p><strong>可选：位置列表：</strong>parition提供数据最佳的计算位置，有利于数据处理的本地化。</p>
+</li>
+<li><p>对于一个HDFS文件来说，这个列表保存的就是每个Partition所在的块的位置。按照“<strong>移动数据不如移动计算</strong>”的理念，Spark在进行任务调度的时候，会尽可能地将计算任务分配到其所要处理数据块的存储位置。</p>
+</li>
+</ul>
+<h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><h4 id="Shuffle洗牌"><a href="#Shuffle洗牌" class="headerlink" title="Shuffle洗牌"></a>Shuffle洗牌</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025290101-66903ebb-c9b8-4db8-9b28-5b2e2e7ac72a.png"></p>
+<ul>
+<li>在map结束过后，根据reduce的分工，把不同的字符处理<strong>分到不同的机器</strong>，这就是shuffle，使得有序</li>
+</ul>
+<h4 id="窄依赖"><a href="#窄依赖" class="headerlink" title="窄依赖"></a>窄依赖</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025462662-1ba89dd2-8575-4bbb-91b9-6e19745b1693.png"></p>
+<ul>
+<li><p>每个RDD有多个分区</p>
+</li>
+<li><p>一个父RDD的分区对应一个子RDD中的分区</p>
+</li>
+<li><p>或者是多个父RDD的分区对应一个子RDD中的分区</p>
+</li>
+<li><p>可以进行<strong>流水线优化</strong></p>
+</li>
+</ul>
+<h4 id="宽依赖"><a href="#宽依赖" class="headerlink" title="宽依赖"></a>宽依赖</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025384522-4ccdbf22-e834-486f-a685-2911dff11d0c.png"></p>
+<ul>
+<li><p>一个父亲RDD的分区，对应子RDD中的多个分区</p>
+</li>
+<li><p>发生了shuffle操作，就是宽依赖</p>
+</li>
+<li><p>不能进行流水线优化</p>
+</li>
+<li><p>宽依赖的时候，就把这个阶段断开</p>
+</li>
+</ul>
+<h3 id="阶段划分"><a href="#阶段划分" class="headerlink" title="阶段划分"></a>阶段划分</h3><h4 id="fork-amp-join"><a href="#fork-amp-join" class="headerlink" title="fork&amp;join"></a>fork&amp;join</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603419670566-a2ddba2d-92cb-42ed-a9db-d5d17f07fa97.png"></p>
+<ul>
+<li><p>并行任务执行的框架，本身分区都在不同机器，把数据fork到不同的机器上进行计算，最后执行结果再join一下，一个fork&amp;join就相当于一个转换，并行执行加快速度</p>
+</li>
+<li><p>优化：不要<strong>发生无意义的等待</strong></p>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025581945-38c2e4e6-dcb2-4150-8e76-c059f1f99e31.png"></p>
+<h3 id="依赖举例"><a href="#依赖举例" class="headerlink" title="依赖举例"></a>依赖举例</h3><h4 id="窄依赖-1"><a href="#窄依赖-1" class="headerlink" title="窄依赖"></a>窄依赖</h4><ul>
+<li>如上图，窄依赖是可以合并的</li>
+</ul>
+<h4 id="宽依赖-1"><a href="#宽依赖-1" class="headerlink" title="宽依赖"></a>宽依赖</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025683614-08e01f3e-8485-4c9c-9b0c-c3c24ea25094.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025716277-cbecc009-1620-44a5-bc15-a1b03206db50.png"></p>
+<ul>
+<li><p>中间发生了shuffle的过程，不能合并了</p>
+</li>
+<li><p>分区4需要依赖1，2，3，需要等这三个</p>
+</li>
+<li><p>只要发生shuffle的操作必须要写磁盘，洗牌必须落地洗</p>
+</li>
+<li><p>对于DAG图<strong>反向解析</strong>，遇到窄依赖，就进行不断的合并，遇到宽依赖的时候一定就要断开成不同的阶段</p>
+</li>
+<li><p><strong>反向解析：</strong>从最后一个Stage开始倒推,如果有依赖关系 就先解决父节点,如果没有依赖关系 就直接运行</p>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025826243-ad0c1321-a8bf-44f5-a93b-bc062bffe350.png"></p>
+<h3 id="RDD运行流程"><a href="#RDD运行流程" class="headerlink" title="RDD运行流程"></a>RDD运行流程</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025745284-0af37c98-0a87-4190-800a-4e5e16e00c6b.png"></p>
+<ul>
+<li><p>创建RDD对象</p>
+</li>
+<li><p>SparkContext中，DAG、Scheduler模块介入运算，计算RDD之间的依赖关系，<strong>RDD之间的依赖关系就形成了DAG</strong></p>
+</li>
+<li><p>每一个DAG被分为多个Stage。划分Stage的一个主要依据是当前计算因子的输入是否是确定的，例如上上图中rddG不能和rddF在一个stage，因为rddG的输入还有rddB的输入</p>
+</li>
+<li><p>DAG图分解为Stage之后，根据RDD和Stage之间的关系找出开销最小的调度方法</p>
+</li>
+<li><p>DAGSchedular把taskset发送给Task Schedular</p>
+</li>
+<li><p>每个worker node，Executor向SparkContext申请Task，Task Scheduler将Task发放给Executor运行同时SparkContext将应用程序代码发放给Executor。</p>
+</li>
+<li><p>分发的时候，基本原则：计算向数据靠拢，数据在哪个节点上面，就优先把计算分配给这个节点</p>
+</li>
+<li><p>Task在Executor上运行，释放出不同的线程，每一个线程运算一个任务，运行完毕释放所有资源。</p>
+</li>
+<li><p>Executor生成的结果返回给Task Schedular返回给DagSchedular返回给SparkContext再返回给用户或者写入HDFS</p>
+</li>
+</ul>
+<h3 id="弹性（容错）"><a href="#弹性（容错）" class="headerlink" title="弹性（容错）"></a>弹性（容错）</h3><ul>
+<li><p>自动内存磁盘的切换，实在放不下就放到磁盘里面</p>
+</li>
+<li><p>基于血统的高效率容错，记录每一个partition的来源，便于快速恢复</p>
+</li>
+<li><p>task限定次数的自动重试</p>
+</li>
+<li><p>Stage失败后自动特定技术的重试</p>
+</li>
+<li><p>checkpoint和persist的主动或者被动触发，用户可见的RDD可以被用户主动调用</p>
+</li>
+<li><p>任务，数据，计算的解耦</p>
+</li>
+<li><p>合并分片和切分分片，根据分片大小自动选择继续切分还是放到磁盘</p>
+</li>
+</ul>
+<h4 id="Cache-amp-CheckPoint"><a href="#Cache-amp-CheckPoint" class="headerlink" title="Cache&amp;CheckPoint"></a>Cache&amp;CheckPoint</h4><ul>
+<li><p>Cache：计算RDD完成后对其进行缓存，如果整个计算失败，可以从缓存读取这个RDD，避免了重新计算， <code>RDD.Cache()</code> </p>
+</li>
+<li><p>checkPoint：把RDD持久化到HDFS，降低RDD数据丢失的风险，会清空所有依赖</p>
+</li>
+</ul>
+<h3 id="算子API"><a href="#算子API" class="headerlink" title="算子API"></a>算子API</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600997308441-2c9f404c-7094-4905-8249-05033e28ac4c.png"></p>
+<h2 id="6-DAG"><a href="#6-DAG" class="headerlink" title="6. DAG"></a>6. DAG</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><p>directed acyclic graph</p>
+</li>
+<li><p>数据到内存，生成RDD，一次又一次的操作，得到结果</p>
+</li>
+<li><p>DAG就是一次又一次的操作，反映不同RDD的关系</p>
+</li>
+<li><p>可以理解为一个DAG图就是一个作业</p>
+</li>
+</ul>
+<h2 id="7-Executor"><a href="#7-Executor" class="headerlink" title="7. Executor"></a>7. Executor</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><p>每个运行机器运行这个进程，完成TaskSchedular分配的很多task</p>
+</li>
+<li><p>进程派生很多线程执行任务</p>
+</li>
+</ul>
+<h2 id="8-SparkContext"><a href="#8-SparkContext" class="headerlink" title="8. SparkContext"></a>8. SparkContext</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603420425320-0d1030d4-ffa5-43fc-9bbe-d2b9c25f1653.png"></p>
+<h3 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><p>代表了应用程序和底层集群的连接</p>
+</li>
+<li><p>程序进行分发然后到底层的机器上</p>
+</li>
+</ul>
+<h3 id="DAGSchedular"><a href="#DAGSchedular" class="headerlink" title="DAGSchedular"></a>DAGSchedular</h3><ul>
+<li><p>把一个Spark作业转换为DAG</p>
+</li>
+<li><p>根据RDD之间的关系找出开销最小的调度方法，把stage（taskset）提交给TaskSchedular</p>
+</li>
+</ul>
+<h3 id="TaskSchedular"><a href="#TaskSchedular" class="headerlink" title="TaskSchedular"></a>TaskSchedular</h3><ul>
+<li><p>维护所有的task集，和所有的task的运行状态</p>
+</li>
+<li><p>根据资源剩余情况分配相应的task</p>
+</li>
+</ul>
+<h2 id="9-Application-amp-Task-amp-Job"><a href="#9-Application-amp-Task-amp-Job" class="headerlink" title="9. Application&amp;Task&amp;Job"></a>9. Application&amp;Task&amp;Job</h2><h3 id="关系图"><a href="#关系图" class="headerlink" title="关系图"></a>关系图</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026436523-94cf12d6-45fe-41d4-a318-62b070abe026.png"></p>
+<ul>
+<li><p>根据代码生成作业</p>
+</li>
+<li><p>作业切分成不同阶段</p>
+</li>
+<li><p>每个阶段不同任务</p>
+</li>
+<li><p>任务派发到不同机器</p>
+</li>
+<li><p>每个机器执行进程，很多个线程执行任务</p>
+</li>
+</ul>
+<h3 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h3><ul>
+<li>代码文件，应用程序</li>
+</ul>
+<h3 id="Task-任务"><a href="#Task-任务" class="headerlink" title="Task 任务"></a>Task 任务</h3><ul>
+<li>运行在Executor上的工作单元，每个线程具体负责一个任务</li>
+</ul>
+<h3 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h3><ul>
+<li><p>应用程序生成若干个作业</p>
+</li>
+<li><p>作业切分成很多个任务子集，叫做一个stage</p>
+</li>
+<li><p>一个作业包含了很多RDD和相应RDD的多个操作</p>
+</li>
+</ul>
+<h3 id="Stage-作业的基本调度单位"><a href="#Stage-作业的基本调度单位" class="headerlink" title="Stage-作业的基本调度单位"></a>Stage-作业的基本调度单位</h3><ul>
+<li><p>作业分成很多stage，一个stage包含了很多任务</p>
+</li>
+<li><p>然后把任务分发到机器上运行</p>
+</li>
+</ul>
+<h2 id="10-运行架构"><a href="#10-运行架构" class="headerlink" title="10. 运行架构"></a>10. 运行架构</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026392610-e92e32f2-3ad2-4720-9c72-de1026f7cea3.png"></p>
+<h3 id="任务控制节点driver-node"><a href="#任务控制节点driver-node" class="headerlink" title="任务控制节点driver node"></a>任务控制节点driver node</h3><ul>
+<li><p>运行SparkContext</p>
+</li>
+<li><p>SparkContext呆在Driver节点中进行统筹分配，driver向cluster manager申请资源，cpu内存等等</p>
+</li>
+</ul>
+<h3 id="集群资源管理器，cluster-manager"><a href="#集群资源管理器，cluster-manager" class="headerlink" title="集群资源管理器，cluster manager"></a>集群资源管理器，cluster manager</h3><ul>
+<li><p>cpu，内存，带宽管理</p>
+</li>
+<li><p>可以用yarn或者自带的或者mesos</p>
+</li>
+<li><p>启动相对应节点的executor进程</p>
+</li>
+<li><p>向对应节点进程发送作业</p>
+</li>
+</ul>
+<h3 id="工作节点"><a href="#工作节点" class="headerlink" title="工作节点"></a>工作节点</h3><ul>
+<li><p>executor派生线程执行相关的任务</p>
+</li>
+<li><p>线程执行具体任务</p>
+</li>
+<li><p>返回给driver节点或者用户，或者数据库或者hdfs</p>
+</li>
+</ul>
+<h2 id="11-参考资料"><a href="#11-参考资料" class="headerlink" title="11. 参考资料"></a>11. 参考资料</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1tJ411B7fU">https://www.bilibili.com/video/BV1tJ411B7fU</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xgjianstart/article/details/65441512">https://blog.csdn.net/xgjianstart/article/details/65441512</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/shishanyuan/p/4700615.html">https://www.cnblogs.com/shishanyuan/p/4700615.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/shenh062326/p/3996545.html">https://www.cnblogs.com/shenh062326/p/3996545.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/candl/p/9604351.html">https://www.cnblogs.com/candl/p/9604351.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.uml.org.cn/bigdata/201612272.asp">http://www.uml.org.cn/bigdata/201612272.asp</a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xia520pi/p/8609602.html#_label2_6">https://www.cnblogs.com/xia520pi/p/8609602.html#_label2_6</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cynyard Qiu</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/writing/"># writing</a>
+                    
+                        <a href="/tags/spark/"># spark</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/10/27/Paxos/">Paxos简述</a>
+            
+            
+            <a class="next" rel="next" href="/2020/09/21/Java-Reflection/">Java反射</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cynyard Qiu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
