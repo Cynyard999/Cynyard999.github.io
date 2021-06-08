@@ -150,7 +150,7 @@ template {
   font-display: swap;
 }
 html {
-  font-family: Ubuntu, Helvetica Neue, PingFang SC, Seguo UI, Microsoft Yahei;
+  font-family: PingFang SC, Seguo UI, Microsoft Yahei, Ubuntu, Helvetica Neue;
 }
 html::-webkit-scrollbar {
   width: 8px;
