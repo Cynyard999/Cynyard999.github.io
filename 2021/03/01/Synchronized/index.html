@@ -222,13 +222,13 @@
 <p>虚拟机中，同步基于进入和退出管程对象实现，无论是显示同步（字节码中由明确的monitorenter和monitorexit）还是隐式同步（Flag，ACC_SYNCHRONIZED标志）</p>
 </blockquote>
 <h2 id="JVM中的对象实例"><a href="#JVM中的对象实例" class="headerlink" title="JVM中的对象实例"></a>JVM中的对象实例</h2><h3 id="对象头"><a href="#对象头" class="headerlink" title="对象头"></a>对象头</h3><h4 id="MarkWord"><a href="#MarkWord" class="headerlink" title="MarkWord"></a>MarkWord</h4><p>存储对象的hashCode、锁信息或分代年龄或GC标志等信息</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1096029/1615299922863-d96abdbf-d7b8-4b50-a4ef-40f3b7fba832.png" alt="image.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1615299922863-d96abdbf-d7b8-4b50-a4ef-40f3b7fba832.png" alt="image.png"></p>
 <p>考虑到空间效率，被设计成一个非固定的数据结构，存储更多有效的信息</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1096029/1615299980182-cffc1a84-3731-41f9-9f4e-b1170622324c.png" alt="image.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1615299980182-cffc1a84-3731-41f9-9f4e-b1170622324c.png" alt="image.png"></p>
 <p>重量级锁也就是synchronized锁，就指向的是这个对象对应的monitor对象的地址，monitor的主要数据结构如下(位于HotSpot虚拟机源码ObjectMonitor.hpp文件，C++实现的)</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ObjectMonitor() &#123;</span><br><span class="line">    _header       = <span class="literal">NULL</span>;</span><br><span class="line">    _count        = <span class="number">0</span>; <span class="comment">//记录个数</span></span><br><span class="line">    _waiters      = <span class="number">0</span>,</span><br><span class="line">    _recursions   = <span class="number">0</span>;</span><br><span class="line">    _object       = <span class="literal">NULL</span>;</span><br><span class="line">    _owner        = <span class="literal">NULL</span>; <span class="comment">//持有该ObjectMonitor的线程的指针；</span></span><br><span class="line">    _WaitSet      = <span class="literal">NULL</span>; <span class="comment">//处于等待状态的线程队列（双向链表）；</span></span><br><span class="line">    _WaitSetLock  = <span class="number">0</span> ;</span><br><span class="line">    _Responsible  = <span class="literal">NULL</span> ;</span><br><span class="line">    _succ         = <span class="literal">NULL</span> ;</span><br><span class="line">    _cxq          = <span class="literal">NULL</span> ; <span class="comment">// 线程竞争管程锁时的队列（单向链表）。</span></span><br><span class="line">    FreeNext      = <span class="literal">NULL</span> ;</span><br><span class="line">    _EntryList    = <span class="literal">NULL</span> ; <span class="comment">//管程的入口线程队列（双向链表）；</span></span><br><span class="line">    _SpinFreq     = <span class="number">0</span> ;</span><br><span class="line">    _SpinClock    = <span class="number">0</span> ;</span><br><span class="line">    OwnerIsThread = <span class="number">0</span> ;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>从中可以看出管程运行模式: （<strong>Mesa管程模型</strong>，进程由堵塞状态被唤醒过后不能立刻执行，而是回到入口等待，所以需要重新检查是否满足条件，而霍尔管程在线程被唤醒过后立刻切换上下文，更加耗费CPU）</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2021/png/1096029/1615300784529-1b3fc106-2076-4181-8da6-6884be06e4ab.png" alt="image.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1615300784529-1b3fc106-2076-4181-8da6-6884be06e4ab.png" alt="image.png"></p>
 <ul>
 <li>首先进入entrylist，获取到monitor过后进入owner区域，如果调用了wait方法，进入waitset并且signal一个entryset的进程</li>
 </ul>
@@ -322,7 +322,7 @@
         <section class="post-nav">
             
             
-            <a class="next" rel="next" href="/2021/02/25/2021-2-25-Coding-Patterns/">常见编程模式</a>
+            <a class="next" rel="next" href="/2021/02/25/Coding-Patterns/">常见编程模式</a>
             
         </section>
 

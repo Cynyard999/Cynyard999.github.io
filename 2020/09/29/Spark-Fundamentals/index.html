@@ -273,8 +273,8 @@
 <li><p>更快，内存计算能够让中间结果缓存到内存，提高了低延迟，特别是迭代运算（反复迭代的存取效率），<strong>不写硬盘不写硬盘不写硬盘</strong></p>
 </li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026968505-7bc739c1-6309-4e5f-ad80-e79987088b98.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026984607-98121b3f-c058-4975-8bfa-a007480909c6.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604026968505-7bc739c1-6309-4e5f-ad80-e79987088b98.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604026984607-98121b3f-c058-4975-8bfa-a007480909c6.png"></p>
 <h3 id="容错"><a href="#容错" class="headerlink" title="容错"></a>容错</h3><ul>
 <li>Spark容错成本低，使用弹性分布数据集RDD，存储在节点内存中的只读性质的数据集，某一部分丢失或者出错可以通过整个数据集的计算流程的血缘关系（即充许基于数据衍生过程）来实现重建</li>
 </ul>
@@ -287,7 +287,7 @@
 <h3 id="存储框架"><a href="#存储框架" class="headerlink" title="存储框架"></a>存储框架</h3><ul>
 <li>没啥问题</li>
 </ul>
-<h2 id="3-架构"><a href="#3-架构" class="headerlink" title="3. 架构"></a>3. 架构</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600758975796-cc1e79a2-d125-4d6b-a49c-9f5587bc143d.png"></p>
+<h2 id="3-架构"><a href="#3-架构" class="headerlink" title="3. 架构"></a>3. 架构</h2><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1600758975796-cc1e79a2-d125-4d6b-a49c-9f5587bc143d.png"></p>
 <h3 id="3-1-高层库"><a href="#3-1-高层库" class="headerlink" title="3. 1 高层库"></a>3. 1 高层库</h3><h4 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h4><ul>
 <li><p>前身是shark，即Hive on Spark，本质上是通过Hive的HQL解析，把HQL翻译成Spark上的RDD操作，然后通过Hive的metadata获取数据库里的表信息，实际HDFS上的数据和文件，会由Shark获取并放到Spark上运算，代码量大，优化维护复杂</p>
 </li>
@@ -302,7 +302,7 @@
 <li><p>将流式计算分解成一系列短小的批处理作业，都转换为Spark中的RDD，对DStream的操作转换为对RDD的操作</p>
 </li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600759848147-f24d546f-e208-4f13-94dc-4ec50de847c7.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1600759848147-f24d546f-e208-4f13-94dc-4ec50de847c7.png"></p>
 <h4 id="Spark-GraphX"><a href="#Spark-GraphX" class="headerlink" title="Spark GraphX"></a>Spark GraphX</h4><ul>
 <li><p>用于图和图并行计算的api，可以认为是GraphLab(C++)和Pregel(C++)在Spark(Scala)上的重写及优化</p>
 </li>
@@ -375,7 +375,7 @@
 <li><p>在master上面启动driver程序，结果保存到master上</p>
 </li>
 </ul>
-<h2 id="5-RDD"><a href="#5-RDD" class="headerlink" title="5. RDD"></a>5. RDD</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600760681708-d46fe2b8-928e-4963-af94-f1599e612fed.png"></p>
+<h2 id="5-RDD"><a href="#5-RDD" class="headerlink" title="5. RDD"></a>5. RDD</h2><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1600760681708-d46fe2b8-928e-4963-af94-f1599e612fed.png"></p>
 <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
 <li><p>Resilient Distributed Datasets<strong>弹性分布式数据集</strong></p>
 </li>
@@ -404,7 +404,7 @@
 <li><p>基于数据流，例如socket创建</p>
 </li>
 </ul>
-<h3 id="操作类型"><a href="#操作类型" class="headerlink" title="操作类型"></a>操作类型</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603418337152-3dfd9062-ff78-47c7-817d-dee6c3ae1761.png"></p>
+<h3 id="操作类型"><a href="#操作类型" class="headerlink" title="操作类型"></a>操作类型</h3><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603418337152-3dfd9062-ff78-47c7-817d-dee6c3ae1761.png"></p>
 <h4 id="转换类型操作"><a href="#转换类型操作" class="headerlink" title="转换类型操作"></a>转换类型操作</h4><ul>
 <li><p>只是记录转换的轨迹，不会计算</p>
 </li>
@@ -432,11 +432,11 @@
 <li><p>对于一个HDFS文件来说，这个列表保存的就是每个Partition所在的块的位置。按照“<strong>移动数据不如移动计算</strong>”的理念，Spark在进行任务调度的时候，会尽可能地将计算任务分配到其所要处理数据块的存储位置。</p>
 </li>
 </ul>
-<h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><h4 id="Shuffle洗牌"><a href="#Shuffle洗牌" class="headerlink" title="Shuffle洗牌"></a>Shuffle洗牌</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025290101-66903ebb-c9b8-4db8-9b28-5b2e2e7ac72a.png"></p>
+<h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><h4 id="Shuffle洗牌"><a href="#Shuffle洗牌" class="headerlink" title="Shuffle洗牌"></a>Shuffle洗牌</h4><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025290101-66903ebb-c9b8-4db8-9b28-5b2e2e7ac72a.png"></p>
 <ul>
 <li>在map结束过后，根据reduce的分工，把不同的字符处理<strong>分到不同的机器</strong>，这就是shuffle，使得有序</li>
 </ul>
-<h4 id="窄依赖"><a href="#窄依赖" class="headerlink" title="窄依赖"></a>窄依赖</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025462662-1ba89dd2-8575-4bbb-91b9-6e19745b1693.png"></p>
+<h4 id="窄依赖"><a href="#窄依赖" class="headerlink" title="窄依赖"></a>窄依赖</h4><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025462662-1ba89dd2-8575-4bbb-91b9-6e19745b1693.png"></p>
 <ul>
 <li><p>每个RDD有多个分区</p>
 </li>
@@ -447,7 +447,7 @@
 <li><p>可以进行<strong>流水线优化</strong></p>
 </li>
 </ul>
-<h4 id="宽依赖"><a href="#宽依赖" class="headerlink" title="宽依赖"></a>宽依赖</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025384522-4ccdbf22-e834-486f-a685-2911dff11d0c.png"></p>
+<h4 id="宽依赖"><a href="#宽依赖" class="headerlink" title="宽依赖"></a>宽依赖</h4><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025384522-4ccdbf22-e834-486f-a685-2911dff11d0c.png"></p>
 <ul>
 <li><p>一个父亲RDD的分区，对应子RDD中的多个分区</p>
 </li>
@@ -458,19 +458,19 @@
 <li><p>宽依赖的时候，就把这个阶段断开</p>
 </li>
 </ul>
-<h3 id="阶段划分"><a href="#阶段划分" class="headerlink" title="阶段划分"></a>阶段划分</h3><h4 id="fork-amp-join"><a href="#fork-amp-join" class="headerlink" title="fork&amp;join"></a>fork&amp;join</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603419670566-a2ddba2d-92cb-42ed-a9db-d5d17f07fa97.png"></p>
+<h3 id="阶段划分"><a href="#阶段划分" class="headerlink" title="阶段划分"></a>阶段划分</h3><h4 id="fork-amp-join"><a href="#fork-amp-join" class="headerlink" title="fork&amp;join"></a>fork&amp;join</h4><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603419670566-a2ddba2d-92cb-42ed-a9db-d5d17f07fa97.png"></p>
 <ul>
 <li><p>并行任务执行的框架，本身分区都在不同机器，把数据fork到不同的机器上进行计算，最后执行结果再join一下，一个fork&amp;join就相当于一个转换，并行执行加快速度</p>
 </li>
 <li><p>优化：不要<strong>发生无意义的等待</strong></p>
 </li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025581945-38c2e4e6-dcb2-4150-8e76-c059f1f99e31.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025581945-38c2e4e6-dcb2-4150-8e76-c059f1f99e31.png"></p>
 <h3 id="依赖举例"><a href="#依赖举例" class="headerlink" title="依赖举例"></a>依赖举例</h3><h4 id="窄依赖-1"><a href="#窄依赖-1" class="headerlink" title="窄依赖"></a>窄依赖</h4><ul>
 <li>如上图，窄依赖是可以合并的</li>
 </ul>
-<h4 id="宽依赖-1"><a href="#宽依赖-1" class="headerlink" title="宽依赖"></a>宽依赖</h4><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025683614-08e01f3e-8485-4c9c-9b0c-c3c24ea25094.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025716277-cbecc009-1620-44a5-bc15-a1b03206db50.png"></p>
+<h4 id="宽依赖-1"><a href="#宽依赖-1" class="headerlink" title="宽依赖"></a>宽依赖</h4><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025683614-08e01f3e-8485-4c9c-9b0c-c3c24ea25094.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025716277-cbecc009-1620-44a5-bc15-a1b03206db50.png"></p>
 <ul>
 <li><p>中间发生了shuffle的过程，不能合并了</p>
 </li>
@@ -483,8 +483,8 @@
 <li><p><strong>反向解析：</strong>从最后一个Stage开始倒推,如果有依赖关系 就先解决父节点,如果没有依赖关系 就直接运行</p>
 </li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025826243-ad0c1321-a8bf-44f5-a93b-bc062bffe350.png"></p>
-<h3 id="RDD运行流程"><a href="#RDD运行流程" class="headerlink" title="RDD运行流程"></a>RDD运行流程</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604025745284-0af37c98-0a87-4190-800a-4e5e16e00c6b.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025826243-ad0c1321-a8bf-44f5-a93b-bc062bffe350.png"></p>
+<h3 id="RDD运行流程"><a href="#RDD运行流程" class="headerlink" title="RDD运行流程"></a>RDD运行流程</h3><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604025745284-0af37c98-0a87-4190-800a-4e5e16e00c6b.png"></p>
 <ul>
 <li><p>创建RDD对象</p>
 </li>
@@ -527,7 +527,7 @@
 <li><p>checkPoint：把RDD持久化到HDFS，降低RDD数据丢失的风险，会清空所有依赖</p>
 </li>
 </ul>
-<h3 id="算子API"><a href="#算子API" class="headerlink" title="算子API"></a>算子API</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1600997308441-2c9f404c-7094-4905-8249-05033e28ac4c.png"></p>
+<h3 id="算子API"><a href="#算子API" class="headerlink" title="算子API"></a>算子API</h3><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1600997308441-2c9f404c-7094-4905-8249-05033e28ac4c.png"></p>
 <h2 id="6-DAG"><a href="#6-DAG" class="headerlink" title="6. DAG"></a>6. DAG</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><ul>
 <li><p>directed acyclic graph</p>
 </li>
@@ -544,7 +544,7 @@
 <li><p>进程派生很多线程执行任务</p>
 </li>
 </ul>
-<h2 id="8-SparkContext"><a href="#8-SparkContext" class="headerlink" title="8. SparkContext"></a>8. SparkContext</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603420425320-0d1030d4-ffa5-43fc-9bbe-d2b9c25f1653.png"></p>
+<h2 id="8-SparkContext"><a href="#8-SparkContext" class="headerlink" title="8. SparkContext"></a>8. SparkContext</h2><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603420425320-0d1030d4-ffa5-43fc-9bbe-d2b9c25f1653.png"></p>
 <h3 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h3><ul>
 <li><p>代表了应用程序和底层集群的连接</p>
 </li>
@@ -563,7 +563,7 @@
 <li><p>根据资源剩余情况分配相应的task</p>
 </li>
 </ul>
-<h2 id="9-Application-amp-Task-amp-Job"><a href="#9-Application-amp-Task-amp-Job" class="headerlink" title="9. Application&amp;Task&amp;Job"></a>9. Application&amp;Task&amp;Job</h2><h3 id="关系图"><a href="#关系图" class="headerlink" title="关系图"></a>关系图</h3><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026436523-94cf12d6-45fe-41d4-a318-62b070abe026.png"></p>
+<h2 id="9-Application-amp-Task-amp-Job"><a href="#9-Application-amp-Task-amp-Job" class="headerlink" title="9. Application&amp;Task&amp;Job"></a>9. Application&amp;Task&amp;Job</h2><h3 id="关系图"><a href="#关系图" class="headerlink" title="关系图"></a>关系图</h3><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604026436523-94cf12d6-45fe-41d4-a318-62b070abe026.png"></p>
 <ul>
 <li><p>根据代码生成作业</p>
 </li>
@@ -596,7 +596,7 @@
 <li><p>然后把任务分发到机器上运行</p>
 </li>
 </ul>
-<h2 id="10-运行架构"><a href="#10-运行架构" class="headerlink" title="10. 运行架构"></a>10. 运行架构</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1604026392610-e92e32f2-3ad2-4720-9c72-de1026f7cea3.png"></p>
+<h2 id="10-运行架构"><a href="#10-运行架构" class="headerlink" title="10. 运行架构"></a>10. 运行架构</h2><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1604026392610-e92e32f2-3ad2-4720-9c72-de1026f7cea3.png"></p>
 <h3 id="任务控制节点driver-node"><a href="#任务控制节点driver-node" class="headerlink" title="任务控制节点driver node"></a>任务控制节点driver node</h3><ul>
 <li><p>运行SparkContext</p>
 </li>

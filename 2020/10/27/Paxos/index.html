@@ -208,7 +208,7 @@
 <h2 id="现实问题"><a href="#现实问题" class="headerlink" title="现实问题"></a>现实问题</h2><blockquote>
 <p>在一个分布式系统中，由于节点故障、网络延迟等各种原因，根据CAP理论，我们只能保证一致性（Consistency）、可用性（Availability）、分区容错性（Partition Tolerance） 中的两个。<br>一致性问题，可以根据是否存在恶意节点分类两类。无恶意节点，是指节点会丢失、重发、不响应消息，但不会篡改消息。而恶意节点可能会篡改消息。有恶意节点的问题称为拜占庭将军问题，不在今天的讨论范围。Paxos很好地解决了无恶意节点的分布式一致性问题</p>
 </blockquote>
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603179808882-a78ec04d-6f94-4a30-b43b-e69428576061.png"></p>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603179808882-a78ec04d-6f94-4a30-b43b-e69428576061.png"></p>
 <h2 id="节点角色"><a href="#节点角色" class="headerlink" title="节点角色"></a>节点角色</h2><ul>
 <li><p>proposer</p>
 </li>
@@ -233,7 +233,7 @@
 <li><p>决策阶段</p>
 </li>
 </ul>
-<h2 id="Basic-Paxos算法具体过程"><a href="#Basic-Paxos算法具体过程" class="headerlink" title="Basic-Paxos算法具体过程"></a>Basic-Paxos算法具体过程</h2><p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603787116866-35cc88b1-ac6e-4a28-937f-1e91ec9d04f1.png"></p>
+<h2 id="Basic-Paxos算法具体过程"><a href="#Basic-Paxos算法具体过程" class="headerlink" title="Basic-Paxos算法具体过程"></a>Basic-Paxos算法具体过程</h2><p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603787116866-35cc88b1-ac6e-4a28-937f-1e91ec9d04f1.png"></p>
 <h3 id="两个注意点"><a href="#两个注意点" class="headerlink" title="两个注意点"></a>两个注意点</h3><ul>
 <li><p><strong>acceptor</strong>不接受更低的贿赂</p>
 <ul>
@@ -288,10 +288,10 @@
 <li><p>proposerB更加有钱，用更多的钱在 <code>prepare</code> 阶段贿赂了三个选民（3 1 2），然后在A的 <code>proposal</code> 失败用更多的钱重新贿赂，进行新的 <code>prepare</code> 的时候，抢在A的前面，用 <code>proposal</code> 提前赢得了两个选民的认可，最后迫使A妥协</p>
 </li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603166334012-16d0b93d-5e6e-4d89-9cba-dda576a605b7.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603166334012-16d0b93d-5e6e-4d89-9cba-dda576a605b7.png"></p>
 <h3 id="举例2"><a href="#举例2" class="headerlink" title="举例2"></a>举例2</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19787937/answer/107750652">https://www.zhihu.com/question/19787937/answer/107750652</a></p>
 <h3 id="活锁"><a href="#活锁" class="headerlink" title="活锁"></a>活锁</h3><p>两个proposers交替 <code>Prepare</code> 成功，而 <code>proposal</code> 失败，最后不断提高自己的编号进行尝试的过程<br /></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/1096029/1603786710256-a24ef2a8-1588-4db5-88ff-fab285454109.png"></p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603786710256-a24ef2a8-1588-4db5-88ff-fab285454109.png"></p>
 <p>解决方案是在proposer失败之后给一个随机的等待时间，减少同时请求的可能</p>
 <h2 id="Multi-Paxos算法流程（没研究完）"><a href="#Multi-Paxos算法流程（没研究完）" class="headerlink" title="Multi-Paxos算法流程（没研究完）"></a>Multi-Paxos算法流程（没研究完）</h2><blockquote>
 <p>原始的Paxos算法（Basic Paxos）只能对一个值形成决议，决议的形成至少需要两次网络来回，在高并发情况下可能需要更多的网络来回，极端情况下甚至可能形成活锁。如果想连续确定多个值，Basic Paxos搞不定了。因此Basic Paxos几乎只是用来做理论研究，并不直接应用在实际工程中。</p>
