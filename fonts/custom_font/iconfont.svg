@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+  <metadata>Created by iconfont</metadata>
+  <defs>
+  <font id="iconfont" horiz-adv-x="1024">
+    <font-face
+      font-family="iconfont"
+      font-weight="400"
+      font-stretch="normal"
+      units-per-em="1024"
+      ascent="896"
+      descent="-128"
+    />
+      <missing-glyph />
+      
+      <glyph glyph-name="email" unicode="&#59587;" d="M960 704H64v-640h896V704z m-64-64v-512H128V640h768zM73.376 649.376l45.248 45.248L512 301.28l9.376 9.344 45.248-45.248L512 210.752zM950.624 649.376l-45.248 45.248L512 301.28l-9.376 9.344-45.248-45.248L512 210.752z"  horiz-adv-x="1024" />
+      
+    </font>
+  </defs>
+</svg>
