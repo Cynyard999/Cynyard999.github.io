@@ -261,6 +261,7 @@
 <h3 id="轻量锁"><a href="#轻量锁" class="headerlink" title="轻量锁"></a>轻量锁</h3><ul>
 <li>当存在第二个线程申请同一个锁对象的时候，就会升级为轻量锁</li>
 <li>适应的场景是线程交替执行临界区域的场合</li>
+<li>如果失败就会短暂自旋，防止线程被系统挂起</li>
 </ul>
 <h3 id="重量锁"><a href="#重量锁" class="headerlink" title="重量锁"></a>重量锁</h3><ul>
 <li>同一时间多个线程竞争锁的时候，升级为重量级锁</li>
@@ -310,9 +311,9 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/interview/"># interview</a>
-                    
                         <a href="/tags/java/"># java</a>
+                    
+                        <a href="/tags/interview/"># interview</a>
                     
                         
                 </span>
