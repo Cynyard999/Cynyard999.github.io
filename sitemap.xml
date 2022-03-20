@@ -230,14 +230,14 @@
   </url>
   
   <url>
-    <loc>https://cynyard999.github.io/tags/computer-organization/</loc>
+    <loc>https://cynyard999.github.io/tags/cpp/</loc>
     <lastmod>2022-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://cynyard999.github.io/tags/cpp/</loc>
+    <loc>https://cynyard999.github.io/tags/computer-organization/</loc>
     <lastmod>2022-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -321,20 +321,6 @@
   </url>
   
   <url>
-    <loc>https://cynyard999.github.io/tags/concurrency/</loc>
-    <lastmod>2022-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/tags/thread/</loc>
-    <lastmod>2022-03-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://cynyard999.github.io/tags/design/</loc>
     <lastmod>2022-03-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -350,6 +336,20 @@
   
   <url>
     <loc>https://cynyard999.github.io/tags/code/</loc>
+    <lastmod>2022-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/concurrency/</loc>
+    <lastmod>2022-03-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/thread/</loc>
     <lastmod>2022-03-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
