@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="referrer" content="no-referrer">
+
+    <meta name="author" content="Cynyard Qiu">
+
+
+
+
+
+<title>https概述 | Cynyard&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/moon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cynyard&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cynyard&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">https概述</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cynyard Qiu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 23, 2023&nbsp;&nbsp;20:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Network/">Network</a>
+                            
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="不安全的Http"><a href="#不安全的Http" class="headerlink" title="不安全的Http"></a>不安全的Http</h1><p>Http作为应用层的协议，基于TCP，进行明文传输，数据没有加密</p>
+<ul>
+<li>容易被窃听，数据没有加密，容易被理解</li>
+<li>容易被篡改，截取http报文后进行修改，发送到目的地</li>
+<li>容易被伪造，伪造成真正的网站</li>
+</ul>
+<p><strong>Https，全称为Http over TLS/SSL，解决了以上三个问题，主要方法是：</strong></p>
+<ul>
+<li>数据加密：使用加密算法传输数据，被截获后无法被理解</li>
+<li>数据摘要：使用摘要算法得到数据的摘要，接收方通过摘要验证</li>
+<li>数字证书：使用数字证书验证服务端的身份<h1 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h1></li>
+</ul>
+<p>加密算法分为两大类</p>
+<ul>
+<li>对称加密：加解密使用同一把密钥</li>
+<li>非对称加密：加解密使用不同的密钥，一般是公钥加私钥</li>
+</ul>
+<h2 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h2><h3 id="凯撒密码"><a href="#凯撒密码" class="headerlink" title="凯撒密码"></a>凯撒密码</h3><p>较为简单的对称加密算法，对英语文本进行加解密，主要思想就是<strong>将明文中的每个字母按照字母表所在位置右移K位，得到密文</strong><br />例如：如果K是2，a将会被c替换<br /><strong>这种方式的缺点是每个字母经过加密后只有唯一的密文表示，如果收集了很多数据，就能够破解加密手段</strong></p>
+<p>更好的方式是才用<strong>多个凯撒密码K轮训进行加密，</strong>例如位置为奇数的字母使用K为2加密，位置为偶数的字母使用K为3加密</p>
+<h3 id="分组加密"><a href="#分组加密" class="headerlink" title="分组加密"></a>分组加密</h3><p>凯撒密码只能够加密英文文本，如要加密所有字符，可以使用分组加密<br />任何字符的实际存储形式都是0/1字符串，可以将数据按照K bits进行分组，每个分组通过一个一对一的映射表进行加密<br /></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674624894708-c54dda9d-2cce-44a3-860e-73f9a8e002a5.png#averageHue=%23eeeeed&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=229&id=u085e3145&margin=%5Bobject%20Object%5D&name=image.png&originHeight=457&originWidth=1006&originalType=binary&ratio=1&rotation=0&showTitle=false&size=50029&status=done&style=none&taskId=u6cb619d2-4a37-4e47-a281-65fcea6d636&title=&width=503" alt="image.png"></p>
+<p><br />为了增加破解的难度，也可以才用多个映射表，轮训队数据进行加密<br />常用的对称加密算法有</p>
+<ul>
+<li>DES</li>
+<li>3DES</li>
+<li>AES</li>
+</ul>
+<p>都是分组加密算法</p>
+<h2 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h2><p>加密和解密的要是不同，分别是公钥和私钥</p>
+<ul>
+<li>公钥加密只能用私钥解密</li>
+<li>私钥加密只能用公钥解密</li>
+<li>公钥对外公开，私钥只能自己知道</li>
+<li>公钥可以由私钥生成，反之不行</li>
+</ul>
+<p>通信双方中，A可以将公钥发送给B，B用公钥加密数据后，即使数据被截获，由于私钥只有A有，所以只有A才能知道具体的信息</p>
+<p>具体的算法参考<br /><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html">RSA算法原理（一）</a><br /><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html">RSA算法原理（二）</a></p>
+<h2 id="混合加密-Https的加密方式"><a href="#混合加密-Https的加密方式" class="headerlink" title="混合加密-Https的加密方式"></a>混合加密-Https的加密方式</h2><p>使用对称加密的前提是，通信双方需要商量出一个密钥，这个密钥的传递过程也需要是密文传输，如果密钥被截获，即使对数据进行了加密，黑客也可以通过密钥进行破解</p>
+<p>非对称加密解决了对称加密的密钥泄露问题，但是非对称加密非常慢，很影响性能，而对称加密非常快，所以HTTPS采用了<strong>混合加密方式，使用非对称加密传递密钥，对称加密传递数据</strong></p>
+<p>这个密钥被称为 <code>**会话密钥**</code></p>
+<ul>
+<li>会话密钥使用非对称加密算法传输，非常安全</li>
+<li>数据通过对称加密算法传输，非常高效<h1 id="摘要算法"><a href="#摘要算法" class="headerlink" title="摘要算法"></a>摘要算法</h1></li>
+</ul>
+<p>也叫做哈希算法，输入为任意数据，输出为固定长度的字符串（摘要）</p>
+<ul>
+<li>不可逆，无法通过输出得到输入</li>
+<li>相同的输入必然得到相同的输出</li>
+<li>不同的输入有可能会产生相同的输出</li>
+<li>无论输入的数据的格式，输出摘要的格式固定不变</li>
+</ul>
+<p>例如，将数据的比特流每 8 个比特进行分组（不足的补零），然后将所有分组进行按位异或运算，那么生成的结果就可以称为摘要</p>
+<p>如果两个不同的输入得到了相同的输出，就叫做<strong>哈希碰撞</strong>，越好的摘要算法出现哈希碰撞的概率非常低，常用的摘要算法有</p>
+<ul>
+<li>MD5</li>
+<li>SHA-1</li>
+<li>SHA-256</li>
+</ul>
+<h2 id="Https中的摘要算法"><a href="#Https中的摘要算法" class="headerlink" title="Https中的摘要算法"></a>Https中的摘要算法</h2><p>为了防止数据在中途被截取，进行篡改或者破坏，发送方会根据摘要算法得到数据的<strong>摘要A</strong>，将摘要和数据一起发送</p>
+<p>接收方通过相同的摘要算法得到数据的<strong>摘要B</strong>，然后将A和B进行对比，如果不一致就说明数据被篡改了</p>
+<p>但是黑客<strong>也可以又篡改数据又篡改摘要</strong>，接收方就无法判断了。所以发送方和接收方之间<strong>必须有一个两者知道的密钥</strong>，就像<strong>会话密钥</strong>一样，为了安全性，不会复用会话密钥，而是使用了一个新的密钥，叫做<strong>鉴别密钥</strong>，获取方式与会话密钥一样</p>
+<p>使用鉴别密钥后，发送方对 <code>数据+鉴别密钥</code> 得到摘要A，并且传输数据和摘要A，接收方收到数据后，对 <code>数据+鉴别密钥</code> 得到摘要B，将A和B进行对比就可以判断数据是否被篡改</p>
+<p>摘要A有一个专用名字，叫做<strong>报文鉴别码</strong>，简称<strong>MAC</strong></p>
+<h1 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h1><p>客户端如何保证与他交流的服务端是真的服务端？<br />典型的<strong>中间人攻击问题</strong></p>
+<ul>
+<li>客户端发送的请求被中间人劫持（DNS劫持），所有请求均发送给中间人</li>
+<li>中间人假装自己是正规网站，向客户端返回自己的公钥2，并获得正规网站的公钥1</li>
+<li>客户端使用公钥2加密会话密钥1发送给中间人，中间人通过私钥2解密得到会话密钥，并假装自己是客户端，使用公钥1加密会话密钥2发送到正规网站</li>
+</ul>
+<p>至此，客户端和正规网站均认为会话密钥已经交换结束，然后开始数据传输</p>
+<ul>
+<li>客户端使用会话密钥1对数据进行加密，发送给中间人</li>
+<li>中间人使用会话密钥1对数据进行解密，得到明文数据，进行篡改</li>
+<li>中间人使用会话密钥2对数据进行加密，发送给正规网站</li>
+</ul>
+<p><strong>客户端需要知道通信另一方的公钥是来自于正规网站并收到认可的，所以就需要数字证书</strong><br />数字证书需要向认证中心进行申请，并且收费<br /><strong>申请流程如下</strong></p>
+<ul>
+<li>正规网站生成一对公钥和私钥，将域名、申请者、公钥等信息整合在一起，生成<code>csr</code>文件，将此文件发送给CA</li>
+<li>CA收到申请后，通过各种手段验证申请者的信息，没有异常后，使用摘要算法对<code>csr</code>文件中正规网站的信息进行摘要，然后再用CA的<strong>私钥</strong>对这个摘要进行加密，得到一串<strong>密文</strong>，也叫做<strong>数字签名</strong></li>
+<li>然后<strong>CA将</strong><code>**数字签名**</code><strong>和csr文件中的</strong><code>**明文信息**</code><strong>打包为数字证书</strong>，把证书返回给正规网站</li>
+</ul>
+<p><strong>改进后的客户端服务端交流方式如下</strong></p>
+<ul>
+<li>客户端会要求服务器发送数字证书</li>
+<li>客户端收到证书后，使用自身携带的CA机构的<strong>公钥解密其中的签名</strong>，得到摘要A，然后通过摘要算法<strong>得到证书中的明文信息的摘要2</strong></li>
+<li>对比摘要1和摘要2，如果一样说明证书是合法的，也就是证书中的公钥是得到CA机构认证的</li>
+</ul>
+<p><strong>电脑操作系统中会内置这些认证中心的公钥，无需担心公钥被伪造的问题</strong></p>
+<p><strong>一些常见的抓包工具例如Fiddler、Wireshark和Charles，想要抓取Https的包并翻译为明文，也需要往操作系统安装证书，作为一个安全的中间人</strong></p>
+<h1 id="SSL-TLS"><a href="#SSL-TLS" class="headerlink" title="SSL/TLS"></a>SSL/TLS</h1><ul>
+<li>Https通过混合加密算法解决Http传输数据被窃听的问题，使用会话密钥</li>
+<li>Https通过摘要算法解决Http传输数据被篡改的问题，使用鉴别密钥</li>
+<li>Https通过数字证书解决Http协议中身份被伪造的问题，客户端验证服务器的证书</li>
+</ul>
+<p>在Https中，在TCP协议握手后，在SSl/TLS协议握手中进行会话密钥、鉴别密钥的协商，以及验证证书的合法性<br /></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674629034836-bc864d4c-1002-4379-8dc8-a504fe41c5b4.png#averageHue=%23f9f8f8&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=245&id=u9b389c96&margin=%5Bobject%20Object%5D&name=image.png&originHeight=490&originWidth=1078&originalType=binary&ratio=1&rotation=0&showTitle=false&size=75436&status=done&style=none&taskId=ufbae5081-4e97-45bc-a233-7b1ee25b9fe&title=&width=539" alt="image.png"></p>
+<p>注意SSL/TLS四次握手也是明文的<br /></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674629099675-e787f7c6-97f1-4933-a374-391fbd2355fd.png#averageHue=%2323414d&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=214&id=u9f27e64c&margin=%5Bobject%20Object%5D&name=image.png&originHeight=310&originWidth=988&originalType=binary&ratio=1&rotation=0&showTitle=true&size=61871&status=done&style=none&taskId=u32c6ff5b-4842-4a00-8535-9ef3ce3422b&title=Wireshark%E6%8A%93%E5%8C%85%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B&width=681" alt="image.png" title="Wireshark抓包四次握手"><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633222114-f1bf8afe-9b75-45b6-b77e-93957638e645.png#averageHue=%23faf7f6&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=570&id=Cujzc&margin=%5Bobject%20Object%5D&name=image.png&originHeight=915&originWidth=1080&originalType=binary&ratio=1&rotation=0&showTitle=true&size=293586&status=done&style=none&taskId=u56a248dd-5abc-4420-b8dd-92641b8df31&title=%E5%9B%9B%E6%AC%A1%E6%8F%A1%E6%89%8B%E8%AF%A6%E7%BB%86%E8%BF%87%E7%A8%8B&width=673" alt="image.png" title="四次握手详细过程"></p>
+<h2 id="第一次握手"><a href="#第一次握手" class="headerlink" title="第一次握手"></a>第一次握手</h2><p>客户端向服务器发起加密通信请求，内容包括</p>
+<ul>
+<li>客户端支持的SSL/TLS协议版本，例如TLS1.2版本</li>
+<li>客户端产生的随机数A，用于后续生成会话密钥和鉴别密钥</li>
+<li>客户端支持的密码套件列表，每个套件包括<ul>
+<li>用于传输会话密钥的非对称加密算法，如 ECDHE、RSA</li>
+<li>用于验证数字证书的非对称加密算法，如 ECDHE、RSA</li>
+<li>用于传输数据的对称加密算法，如 AES_128_GCM、AES_128_CBC</li>
+<li>用于验证报文完整性的摘要算法，如 SHA256、SHA384</li>
+<li>TLS_非对称加密算法_非对称加密算法_对称加密算法_摘要算法，如果两个非对称加密算法一致，可省略不写。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633978600-f4a4203d-49c5-4737-8c2f-49e13c6458ca.png#averageHue=%23f7f0ef&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=199&id=u4305a2d7&margin=%5Bobject%20Object%5D&name=image.png&originHeight=397&originWidth=942&originalType=binary&ratio=1&rotation=0&showTitle=false&size=53365&status=done&style=none&taskId=u1210691a-5d25-4067-be3a-b5de832f3e1&title=&width=471" alt="image.png"></p>
+<h3 id="具体抓包如下"><a href="#具体抓包如下" class="headerlink" title="具体抓包如下"></a>具体抓包如下</h3><p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633882886-8ffb997c-1518-4580-ba89-eb0b9fa700ea.png#averageHue=%23ededed&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=381&id=ub1326cb2&margin=%5Bobject%20Object%5D&name=image.png&originHeight=762&originWidth=1500&originalType=binary&ratio=1&rotation=0&showTitle=false&size=204948&status=done&style=none&taskId=u9c8bda44-736f-4091-92f1-228cd340451&title=&width=750" alt="image.png"></p>
+<h2 id="第二次握手"><a href="#第二次握手" class="headerlink" title="第二次握手"></a>第二次握手</h2><p>服务器收到加密通信请求后，向客户端发出响应，内容主要包括</p>
+<ul>
+<li>确认的SSL/TLS协议版本，如果不支持，关闭加密通信</li>
+<li>服务器产生的随机数B，用于后续生成会话密钥和鉴别密钥</li>
+<li>确认的密码套件</li>
+<li>服务器的数字证书</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633969827-4d597e2d-9b32-4dba-bf67-3788215a9795.png#averageHue=%23f8f2f1&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=312&id=u35e90abd&margin=%5Bobject%20Object%5D&name=image.png&originHeight=624&originWidth=975&originalType=binary&ratio=1&rotation=0&showTitle=false&size=83337&status=done&style=none&taskId=ua4d43a10-662e-4662-9422-a249ac0ce50&title=&width=487.5" alt="image.png"></p>
+<h3 id="具体抓包如下-1"><a href="#具体抓包如下-1" class="headerlink" title="具体抓包如下"></a>具体抓包如下</h3><p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633905481-381caffd-be25-45dc-b931-95519d507594.png#averageHue=%23f0f0f0&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=383&id=uc5f6211f&margin=%5Bobject%20Object%5D&name=image.png&originHeight=766&originWidth=1374&originalType=binary&ratio=1&rotation=0&showTitle=false&size=167168&status=done&style=none&taskId=u09879967-42e5-43fc-ae0f-b73584cafc7&title=&width=687" alt="image.png"><br /><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633910087-ba241241-5e7f-4b12-89d9-5cc2a9092ed6.png#averageHue=%23f1f1f1&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=452&id=u74a8da86&margin=%5Bobject%20Object%5D&name=image.png&originHeight=904&originWidth=1470&originalType=binary&ratio=1&rotation=0&showTitle=false&size=237574&status=done&style=none&taskId=ub3ee6847-0019-4ef4-80c9-4c217cfe016&title=&width=735" alt="image.png"></p>
+<h2 id="第三次握手"><a href="#第三次握手" class="headerlink" title="第三次握手"></a>第三次握手</h2><p>客户端收到服务器的回应，并且验证数字证书合法后，进行第三次握手</p>
+<ul>
+<li>前主密钥（Pre Master Secret）：客户端产生的随机数C，用服务器的公钥（证书中）进行加密得到<ul>
+<li>客户端根据随机数A、随机数B以及随机数C计算出主密钥（Master Secret），然后对主密钥进行切片得到<strong>两个会话密钥A、B和两个鉴别密钥a、b</strong>（不会发送给服务端）</li>
+<li>⚠️如果使用DH算法，就不需要传递前主密钥，双方可以根据交换各自的参数来算出这个随机数C，<strong>整个通话的安全决定随机数C是否被破解</strong></li>
+</ul>
+</li>
+<li>加密通信算法改变通知Change Cipher Spec</li>
+<li>客户端握手结束通知，<strong>生成所有握手报文数据的摘要，通过会话密钥A加密后发送给服务器</strong>，给服务器校验</li>
+</ul>
+<p>传递前主密钥<br /></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674629667221-d37ba41f-d731-4aa4-a9da-0d57834f6c7e.png#averageHue=%23faf5f4&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=226&id=u553825eb&margin=%5Bobject%20Object%5D&name=image.png&originHeight=451&originWidth=1080&originalType=binary&ratio=1&rotation=0&showTitle=false&size=167723&status=done&style=none&taskId=u058cc68d-ec61-4be6-8323-ab77569befe&title=&width=540" alt="image.png"></p>
+<h3 id="具体抓包如下-2"><a href="#具体抓包如下-2" class="headerlink" title="具体抓包如下"></a>具体抓包如下</h3><p>使用DH算法传递参数<br /></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633511839-0e0a85cf-7e79-456e-a3bc-3f4ccd4e645e.png#averageHue=%23f3f3f3&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=280&id=ueff4ef64&margin=%5Bobject%20Object%5D&name=image.png&originHeight=774&originWidth=1488&originalType=binary&ratio=1&rotation=0&showTitle=false&size=157309&status=done&style=none&taskId=u4e0c566f-4971-4b6e-95de-29baec00cd5&title=&width=539" alt="image.png"></p>
+<h2 id="第四次握手"><a href="#第四次握手" class="headerlink" title="第四次握手"></a>第四次握手</h2><p>服务器收到客户端的消息后，利用自己的私钥解密出前主密钥C，根据随机数A、随机数B以及前主密钥C计算出主密钥，切片得到<strong>两个会话密钥A、B和两个鉴别密钥a、b</strong><br />然后进行第四次握手，内容包括</p>
+<ul>
+<li>Session Ticket：下一次请求https的时候，可以使用这个session ticket，后续的https请求可以节省很多资源，只有服务器才能解密，其中包括本次对话的主要信息，比如对话密钥和加密方法</li>
+<li>加密通信算法改变通知Change Cipher Spec</li>
+<li>服务器握手结束通知，<strong>生成所有握手报文数据的摘要，使用会话密钥B加密后发送给客户端</strong>，给客户端校验</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674634009723-9f1b716d-1917-40a9-b068-6d40113a65f9.png#averageHue=%23f7f1f0&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=134&id=u080f5a06&margin=%5Bobject%20Object%5D&name=image.png&originHeight=268&originWidth=978&originalType=binary&ratio=1&rotation=0&showTitle=false&size=38983&status=done&style=none&taskId=u348eceb2-c1f6-4b13-8937-c93fcea32d2&title=&width=489" alt="image.png"></p>
+<h3 id="具体抓包如下-3"><a href="#具体抓包如下-3" class="headerlink" title="具体抓包如下"></a>具体抓包如下</h3><p><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1674633641834-8d644724-72e6-42e0-8dcb-66bdb78ca746.png#averageHue=%23f4f4f4&clientId=u121e7d1d-e7e7-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=352&id=u73ecbbf1&margin=%5Bobject%20Object%5D&name=image.png&originHeight=703&originWidth=1500&originalType=binary&ratio=1&rotation=0&showTitle=false&size=242841&status=done&style=none&taskId=uf77571e9-c4f1-4b66-ad1f-25fc9694872&title=&width=750" alt="image.png"></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
+<li>为什么第三、四次握手需要发送所有握手报文的摘要</li>
+</ol>
+<p>防止握手信息被篡改。<br />客户端支持的密码套件列表中，有些加密算法较弱，有些加密算法较强，而此密码套件是明文传输的，万一<strong>黑客将此密码套件列表进行了修改，只保留一些安全性较低的加密算法</strong>，那么服务器就只能从这些安全性较低的加密算法中选择，安全性大大降低。因此需要通过发送摘要的形式防止握手信息被篡改。</p>
+<ol start="2">
+<li>为什么不直接发送一个主密钥，而是用两个随机数加一个前主密钥重新生成一个主密钥呢？</li>
+</ol>
+<p>防止连接重放<br />如果没有前面两个随机数，客户端生成一个主密钥并且通过公钥加密给服务器，黑客就可以冒充客户端给服务器发送相同的报文（即再次建立握手过程，即使不知道内容是啥），然后服务器会认为客户端再次https连接，然后黑客也可以发送相同的请求<br />有了前两个随机数，即使黑客想要连接重放，由于随机数不同生成的密钥也不同，黑客重新发送的内容将会失效</p>
+<ol start="3">
+<li>Http一定比Https快吗</li>
+</ol>
+<p>使用HTTPS并不一定比HTTP慢，只是在前期握手阶段会有时间损耗，但是包括后续在网络中传输的时候时候，一些路由器，网关又会对http请求限制，加密这样</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4qSc0emO-CeNDaJlgSjbRA">https://mp.weixin.qq.com/s/4qSc0emO-CeNDaJlgSjbRA</a><br /><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html">https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html</a><br /><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html">http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cynyard Qiu</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/https/"># https</a>
+                    
+                        <a href="/tags/ssl-tls/"># ssl/tls</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/12/03/dma-and-zero-copy/">DMA和零拷贝技术</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cynyard Qiu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> 
+        
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
