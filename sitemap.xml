@@ -2,6 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://cynyard999.github.io/2021/11/29/use-java-in-terminal/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2020/11/01/DHT/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2020/09/21/Java-Reflection/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2020/08/10/Cpp/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2020/01/10/COA2/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2020/01/10/COA/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2021/10/04/Daemon-Thread/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2022/11/02/hackers-and-painters/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2022/10/04/the-mythical-man-month/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2022/10/19/pepleware/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2022/11/19/the-phoenix%20project/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/2022/12/03/the-elements-of-scrum/</loc>
+    
+    <lastmod>2023-01-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://cynyard999.github.io/2022/12/03/dma-and-zero-copy/</loc>
     
     <lastmod>2023-01-25</lastmod>
@@ -12,15 +120,6 @@
   
   <url>
     <loc>https://cynyard999.github.io/2023/01/23/https-overview/</loc>
-    
-    <lastmod>2023-01-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/2021/10/04/Daemon-Thread/</loc>
     
     <lastmod>2023-01-25</lastmod>
     
@@ -119,61 +218,7 @@
   </url>
   
   <url>
-    <loc>https://cynyard999.github.io/2021/11/29/use-java-in-terminal/</loc>
-    
-    <lastmod>2021-11-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://cynyard999.github.io/2021/02/25/Coding-Patterns/</loc>
-    
-    <lastmod>2021-06-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/2020/09/21/Java-Reflection/</loc>
-    
-    <lastmod>2021-06-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/2020/08/10/Cpp/</loc>
-    
-    <lastmod>2021-06-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/2020/01/10/COA2/</loc>
-    
-    <lastmod>2021-06-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/2020/01/10/COA/</loc>
-    
-    <lastmod>2021-06-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/2020/11/01/DHT/</loc>
     
     <lastmod>2021-06-08</lastmod>
     
@@ -207,13 +252,6 @@
     <priority>1.0</priority>
   </url>
 
-  
-  <url>
-    <loc>https://cynyard999.github.io/tags/writing/</loc>
-    <lastmod>2023-01-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
   
   <url>
     <loc>https://cynyard999.github.io/tags/computer-organization/</loc>
@@ -272,6 +310,27 @@
   </url>
   
   <url>
+    <loc>https://cynyard999.github.io/tags/cloud-computing/</loc>
+    <lastmod>2023-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/distributed/</loc>
+    <lastmod>2023-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/hashtable/</loc>
+    <lastmod>2023-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://cynyard999.github.io/tags/hexo/</loc>
     <lastmod>2023-01-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -314,7 +373,21 @@
   </url>
   
   <url>
-    <loc>https://cynyard999.github.io/tags/terminal/</loc>
+    <loc>https://cynyard999.github.io/tags/jar/</loc>
+    <lastmod>2023-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/javac/</loc>
+    <lastmod>2023-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/notes/</loc>
     <lastmod>2023-01-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -322,6 +395,13 @@
   
   <url>
     <loc>https://cynyard999.github.io/tags/code/</loc>
+    <lastmod>2023-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/blockchain/</loc>
     <lastmod>2023-01-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -336,13 +416,6 @@
   
   <url>
     <loc>https://cynyard999.github.io/tags/i-o/</loc>
-    <lastmod>2023-01-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://cynyard999.github.io/tags/blockchain/</loc>
     <lastmod>2023-01-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -435,7 +508,7 @@
   </url>
   
   <url>
-    <loc>https://cynyard999.github.io/categories/OS/</loc>
+    <loc>https://cynyard999.github.io/categories/Book/</loc>
     <lastmod>2023-01-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -443,6 +516,13 @@
   
   <url>
     <loc>https://cynyard999.github.io/categories/Blockchain/</loc>
+    <lastmod>2023-01-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/categories/OS/</loc>
     <lastmod>2023-01-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

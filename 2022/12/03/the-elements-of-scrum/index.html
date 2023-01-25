@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="referrer" content="no-referrer">
+
+    <meta name="author" content="Cynyard Qiu">
+
+
+
+
+
+<title>Scrum要素-读书笔记 | Cynyard&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/moon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cynyard&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cynyard&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Scrum要素-读书笔记</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cynyard Qiu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 3, 2022&nbsp;&nbsp;20:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Book/">Book</a>
+                            
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="1-敏捷力介绍"><a href="#1-敏捷力介绍" class="headerlink" title="1. 敏捷力介绍"></a>1. 敏捷力介绍</h1><h2 id="1-瀑布方法"><a href="#1-瀑布方法" class="headerlink" title="1. 瀑布方法"></a>1. 瀑布方法</h2><p>瀑布模型并不现实，不可能会有完美化的产品设计，后面开发总会有意料之外的状况以及并发症。但作为反面例子的瀑布模型却收到听众的吹捧，变得广为人知。<br>瀑布方法的包含的流程有需求收集、设计、编码和测试，每一步骤都需要等前一步骤结束后才能使用，其坚持的哲学BDUF(Big Design Up Front)意味着在投入生产前就能够完美化产品设计，即早点捕获错误和缺陷是可行的。这受到很多新手以及非软件领域专业人员的追捧。<br>但是软件产品系统是复杂系统而不是简单的流水线产品。在开发过程中，前期设计的意料之外的状况和并发症总是会涌现出来</p>
+<h2 id="2-加入敏捷实践者行列"><a href="#2-加入敏捷实践者行列" class="headerlink" title="2. 加入敏捷实践者行列"></a>2. 加入敏捷实践者行列</h2><p>瀑布这样的开发流程只会导致整个项目的失败，BDUF并不能充分的收集需求，它自认为对未来了如指掌，但大型软件项目中唯一确定的只有变化。<br>一个迭代式方法论才是未来，敏捷运动中的敏捷团队提倡迭代式的需求收集、设计、编码、测试和交付。周而复始直到完工。这雪要团队、产品负责人和客户通过持续不断地沟通来达到。<br>无论如何敏捷开发，都需要：</p>
+<ul>
+<li>边做边测试：后期的修复成本非线性的增加</li>
+<li>及早且频繁地交付产品，只有通过可工作的软件才能发现客户真正需要什么</li>
+<li>文档边做边写：文档工作融入流程，但是只写有用的文档</li>
+<li>构建跨职能团队，不让任何个人或者部门成为瓶颈。</li>
+</ul>
+<p>敏捷方式的核心都是迅速交付商业价值。</p>
+<h2 id="3-敏捷价值观与原则"><a href="#3-敏捷价值观与原则" class="headerlink" title="3. 敏捷价值观与原则"></a>3. 敏捷价值观与原则</h2><p>敏捷思想是灵活并且强大的，没有规则手册，只有价值观和原则</p>
+<ol>
+<li>个体和互动高于流程和工具</li>
+</ol>
+<p>流程和工具必须是为人服务的，敏捷流程有非常多可以选择敏捷工具、方法论和流程，要让每一个自组织团队都选择最适合他们的工具。</p>
+<ol start="2">
+<li>工作的软件高于详尽的文档</li>
+</ol>
+<p>文档应该着眼于创造价值以及推动项目进展，但是在前期对于文档太过于投入，就会错失后期检验和适应的良机。因为没有文档的话，还有可工作软件，也可以尽可能有效且高效地前进。</p>
+<ol start="3">
+<li>客户合作高于合同谈判</li>
+</ol>
+<p>开发团队和客户之间需要保证公开和顺畅的对话，在流程中客户的持续参与能够降低客户风险，频繁交付让用户看到样子，保障了客户可以实现所投入时间和金钱的最大化。</p>
+<ol start="4">
+<li>响应变化高于遵循计划</li>
+</ol>
+<p>变化是不可避免的，也是理所当然的，流程就是为变化准备的，所以团队需要为变化做计划。软件项目的规划必须是流动的而非固定的。</p>
+<h2 id="敏捷力的商业案例"><a href="#敏捷力的商业案例" class="headerlink" title="敏捷力的商业案例"></a>敏捷力的商业案例</h2><img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1669539351999-5126cc3d-0711-45a8-90be-a18ff159d485.png#averageHue=%23f3f3f3&clientId=ud4dcb1e4-67aa-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=281&id=uaf470fe9&margin=%5Bobject%20Object%5D&name=image.png&originHeight=562&originWidth=878&originalType=binary&ratio=1&rotation=0&showTitle=false&size=95881&status=done&style=none&taskId=u75a04123-f053-41f1-a051-7dd2b945ae0&title=&width=439" alt="image.png" style="zoom: 50%;" />
+
+<p>越早交付，越早盈亏平衡，越早带来收益才是王道</p>
+<h1 id="2-Scrum"><a href="#2-Scrum" class="headerlink" title="2. Scrum"></a>2. Scrum</h1><h2 id="5-Scrum历史简述"><a href="#5-Scrum历史简述" class="headerlink" title="5. Scrum历史简述"></a>5. Scrum历史简述</h2><p>Scrum是非软件项目也可使用的工作管理和团队动力学。Scrum描述了一种以团队为单位通过来回传球的方式向前推进的流程，希望团队表现起来就像一个人。<br>方法的成功取决于检验和适应，而不在于预定义，因为软件项目过于复杂和混乱，无法预定义来进行管理。<br>而Scrum经过多年的发展，成长是大家共同贡献的结果，Scrum是一个自由的过程。</p>
+<h2 id="6-Scrum角色"><a href="#6-Scrum角色" class="headerlink" title="6. Scrum角色"></a>6. Scrum角色</h2><p>产品负责人：</p>
+<ul>
+<li>负责沟通，帮公司获得最高投资回报</li>
+<li>是唯一有权力要求团队做事，并且改变列表优先级的人</li>
+<li>代表业务和客户，并不需要负责开发，需要确保团队了解客户和用户的需要</li>
+<li>作为产品愿景的监护人，在产品为谁而建，产品为何需要，如何使用等方面都必须得做出决策</li>
+<li>需要解答团队成员们的问题</li>
+</ul>
+<p>Scrum Master</p>
+<ul>
+<li>担当教练角色，帮助团队理解和使用Scrum</li>
+<li>交付物是自组织的团队，帮助团队解决Scrum中的各种障碍</li>
+<li>需要发展出一种和团队亲密接触的关系，成为引导者和谏言者</li>
+</ul>
+<p>团队成员</p>
+<ul>
+<li>决定了工作应该如何完成</li>
+<li>要完成的不是个人的工作，而是团队的工作，帮助团队交付在当前sprint承诺的故事</li>
+<li>为了最大化团队生产力，在团队需要的时候，需要选择舒适区之外的工作，带来全局最优解</li>
+</ul>
+<h2 id="7-Sprint周期"><a href="#7-Sprint周期" class="headerlink" title="7. Sprint周期"></a>7. Sprint周期</h2><p>需要确保sprint周期结束时候需要有可交付的软件。sprint周期的设计就是提供了多方可以接受反馈的机会，当前sprint的收获能够在下一个sprint中生效。</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1669904091914-05da4f5b-8108-422f-9fe3-98a87668d9f0.png#averageHue=%23f0f0f0&clientId=u6ada60b7-b216-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=248&id=u781fe7ba&margin=%5Bobject%20Object%5D&name=image.png&originHeight=496&originWidth=858&originalType=binary&ratio=1&rotation=0&showTitle=false&size=83220&status=done&style=none&taskId=uf04db4d9-682d-4be5-8931-b7397853230&title=&width=429" alt="image.png" style="zoom: 50%;" />
+
+<ul>
+<li>规划会议：找出有信心在sprint结束时交付的用户故事，并决定如何完成，即估值</li>
+<li>站立会议：每天短期的会议，目的是保持交流</li>
+<li>故事时间：保证列表顶部有一批被充分理解的故事，</li>
+<li>演示会议：当作取得成就的庆祝会，如果没有可演示工作也需要进行，因为要保证透明性。给了调整产品和学习的机会。</li>
+<li>回顾会议：帮助团队持续检验和设计，找出可以改进的实事而不是抱怨，找到单个改进点病立刻采取行动。</li>
+</ul>
+<h2 id="8-Scrum工件"><a href="#8-Scrum工件" class="headerlink" title="8. Scrum工件"></a>8. Scrum工件</h2><p>产品列表，在整个交付周期中，作为产品预期交付物的累积清单，不断改变，没有完成之日。顶部永远是那些小而完善的条目，按照优先级精确排序，只有产品负责人可以决定，并且有多重呈现形式。<br>sprint列表，当前sprint的任务清单，在规划会议中产生后就不再修改，除非团队成员提出变更请求。<br>信息辐射器，让所有人都能看见，持续持有最新信息。<br>燃尽图，剩余工作随时间变化的轨迹，包括发布燃尽图和sprint燃尽图<br>任务板，TODO、DOGING、DONE的转变带来成就感，有多重形式<br>完成的定义，归为开发团队所有，也就是必须做完的任务</p>
+<h2 id="9-用户故事"><a href="#9-用户故事" class="headerlink" title="9. 用户故事"></a>9. 用户故事</h2><p>关注人们需要使用软件完成的事，需要指明谁、想要什么以及为什么。</p>
+<h2 id="10-用故事大小值估计工作"><a href="#10-用故事大小值估计工作" class="headerlink" title="10. 用故事大小值估计工作"></a>10. 用故事大小值估计工作</h2><p>生成估值的目标就是提供进度的可预测性度量，如果对进度可预测，就能够做出重要的业务决策，创造更多价值。<br>对于开发人员来说，他们并不知道真正要花多少时间，但是不管怎样他们都会给一个答案。但如果是用相对大小，就能够看见预期的进度。<br>可以先给所有工作项都分配相对大小，然后完成几个工作项度量实际话费的时长，得到实测数据后，给其他条目的设置估算。<br>估算大小的时候，对于复杂的故事，我们无法在感知他们的细微差别，所以可以使用斐波那契数列来作为故事的相对大小。<br>利用整个团队来一轮一轮的把故事从左到右排列整齐，直到全部通过，然后把斐波那契数列贴到故事上。最终目的是达成群体共识，从离散的估值迅速聚集为统一的估值。</p>
+<h1 id="3-辅助性实践"><a href="#3-辅助性实践" class="headerlink" title="3. 辅助性实践"></a>3. 辅助性实践</h1><h2 id="11-除了scrum"><a href="#11-除了scrum" class="headerlink" title="11. 除了scrum"></a>11. 除了scrum</h2><p>交给团队决定</p>
+<h2 id="12-发布规划"><a href="#12-发布规划" class="headerlink" title="12. 发布规划"></a>12. 发布规划</h2><p>如果要发布某个特性集，那么一定要在确保发布更好的产品的基础上选择发布日期。<br>如果要在固定的发布日期发布，一定要明确在那之前能够完成并发布的内容，不要错过。<br>如果能在固定的日期交付固定范围的内容，很难。</p>
+<h2 id="13-用户角色人物"><a href="#13-用户角色人物" class="headerlink" title="13. 用户角色人物"></a>13. 用户角色人物</h2><p>基于真实行为开发一些用户角色人物，完成用户故事。挑选首要角色人物，必须先满足这个人的需求才能满足其他的需求，如果设计产品的时候首先不要满足所有人，而是满足首要角色人物，可能一开始就能创造更多价值。</p>
+<h2 id="14-绘制故事地图"><a href="#14-绘制故事地图" class="headerlink" title="14. 绘制故事地图"></a>14. 绘制故事地图</h2><p>作为一种组织用户故事的方式，产品列表是一维的，只由用户故事的优先级衡量，故事地图是二维的，不仅有故事的优先级，也有彼此的关系和用户更高层的目标。</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1669986510767-d3d9b88c-019c-45c1-bea5-075c3661e60e.png#averageHue=%23f1f1f1&clientId=u6ada60b7-b216-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=375&id=ud3f7f73b&margin=%5Bobject%20Object%5D&name=image.png&originHeight=750&originWidth=814&originalType=binary&ratio=1&rotation=0&showTitle=false&size=102789&status=done&style=none&taskId=u4081d435-b76e-48d1-b489-e16e3b368c7&title=&width=407" alt="image.png" style="zoom:50%;" />
+
+<p>更重要的先发布。</p>
+<h2 id="15-纸上原型"><a href="#15-纸上原型" class="headerlink" title="15. 纸上原型"></a>15. 纸上原型</h2><p>最好用，最通用的还是纸张，笔以及固体浇水。</p>
+<h2 id="16-项目微章程"><a href="#16-项目微章程" class="headerlink" title="16. 项目微章程"></a>16. 项目微章程</h2><p>明确记载了项目关键信息的概要文档，是捕捉想法的一种方式，微小但是设计多个话题，是有用的总结，能够快速了解项目。</p>
+<h2 id="17-重构"><a href="#17-重构" class="headerlink" title="17. 重构"></a>17. 重构</h2><p>BDUF创建的架构到后期会让人感到不安和拘谨，敏捷就是一小步一小步来，只构建当前需要的架构，然后根据需要不断发展，把设计工作内置倒开发流程中。</p>
+<h2 id="18-测试驱动开发"><a href="#18-测试驱动开发" class="headerlink" title="18. 测试驱动开发"></a>18. 测试驱动开发</h2><p>红色-绿色-重构，先开启一个引发失败的测试，然后根据测试变成，满足测试所有功能后再后退一步，检查代码的架构和设计，选择是否重构。<br>这样能让开发人员集中注意力到代码展现的外部行为。</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1669987913373-cf03b414-f4ee-4522-8c7c-aaf89306feaf.png#averageHue=%23f2f2f2&clientId=u6ada60b7-b216-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=180&id=AhT20&margin=%5Bobject%20Object%5D&name=image.png&originHeight=360&originWidth=822&originalType=binary&ratio=1&rotation=0&showTitle=false&size=57038&status=done&style=none&taskId=uf9fc18be-5c2c-46f8-a120-6a5fe0b31b7&title=&width=411" alt="image.png" style="zoom:50%;" />
+
+<h2 id="19-结对编程"><a href="#19-结对编程" class="headerlink" title="19. 结对编程"></a>19. 结对编程</h2><p>减少缺陷、增强可维护性以及分享代码相关知识，都能够实现更快速的开发。因为对机会所有项目而言，后期改变代码的所用时间都超过了创建代码的时间。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cynyard Qiu</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/notes/"># notes</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/12/03/dma-and-zero-copy/">DMA和零拷贝技术</a>
+            
+            
+            <a class="next" rel="next" href="/2022/11/19/the-phoenix%20project/">凤凰项目-读书笔记</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cynyard Qiu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> 
+        
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
