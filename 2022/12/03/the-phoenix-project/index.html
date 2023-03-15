@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="referrer" content="no-referrer">
+
+    <meta name="author" content="Cynyard Qiu">
+
+
+
+
+
+<title>凤凰要素读书笔记 | Cynyard&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/moon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cynyard&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cynyard&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">凤凰要素读书笔记</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cynyard Qiu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 3, 2022&nbsp;&nbsp;20:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Book/">Book</a>
+                            
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="四种工作类型"><a href="#四种工作类型" class="headerlink" title="四种工作类型"></a>四种工作类型</h2><h3 id="业务项目"><a href="#业务项目" class="headerlink" title="业务项目"></a>业务项目</h3><p>业务部门的所有正式项目，IT的参与度在业务项目中权重很高，能体现极大的价值，决定了整个公司的成败。例如本文中的凤凰项目、工资核算系统、信用卡处理系统等等。IT的参与度在业务项目中权重很高，能体现极大的价值。业</p>
+<h3 id="内部项目"><a href="#内部项目" class="headerlink" title="内部项目"></a>内部项目</h3><p>IT部门内部的项目，通常是为了满足某些内部需求开发的，当IT运维成为瓶颈时，会导致问题，因为根本无法测量在内部项目中已经投入的生产能力</p>
+<h3 id="变更"><a href="#变更" class="headerlink" title="变更"></a>变更</h3><blockquote>
+<p>变更，就是对应用程序、数据库、操作系统、网络或硬件进行的物理、逻辑或虚拟操作，并且这样的操作可能对相关服务产生影响</p>
+</blockquote>
+<p>所有的变更都是非常重要的，不论那些变更看起来多么无关紧要。没有批准或者没有记录的变更通常会导致失败，然后引起更严重的事件。解决问题的时候，通过变更记录就能够确立各相关事件的准确时间节点。</p>
+<p>对于高风险变更，需要预先定义好变更目录并且提交变更申请，在 通过审批后才能安排实施。并且对于高风险变更都需要详细审查，建立一些标准变更流程，随时待命，以防出问题。</p>
+<p>对于中风险变更，应该相信各部门的负责人知道自己在干什么，但是也需要确定他们在变更之前恰当的通知了所有可能收到影响的人，并且他们全都表示同意，高层管理者的职责就是流程的完整性而不是实际的变更内容</p>
+<p>对于低风险变更，也叫做标准变更。对于已经多次成功实施的变更，只需要提前批准，虽然它们仍需要提交，但是可以不经过批准就安排操作日程。</p>
+<p>可以使用看板，规范并且有计划的进行每一次变更，评估每次变更带来的风险。</p>
+<h3 id="计划外工作-救火"><a href="#计划外工作-救火" class="headerlink" title="计划外工作-救火"></a>计划外工作-救火</h3><p>由以上三种类型的工作导致的，并且阻碍了所有其它类型工作的完成。计划外的工作不可避免，只能够尽可能减少，在变更前经过充分的测试和验证。计划外工作需要尽快解决，来尽可能不影响原有的任务。</p>
+<p>当人们把所有时间都用来救火，就没有时间和精力去制定日常的计划，所做的只有被动应付，没有足够的时间开展脑力活动。最后如果选择走捷径，省去了必要的步骤来解决问题。短时间内也许行得通，但是久而久之利息成本会越来愈高。</p>
+<p>如果一个部门没有付清他的技术宅舞，公司的每一份努力都将以计划外工作的形式来偿还技术债务的利息。形成了恶性循环。</p>
+<h2 id="减少中间件"><a href="#减少中间件" class="headerlink" title="减少中间件"></a>减少中间件</h2><blockquote>
+<p>一旦研发资本以半成品的形式锁定超过一年而未向公司返还现金，它就几乎不可能再为公司产生回报了。</p>
+</blockquote>
+<p>半成品不能带来任何收益，会逐渐地过期，随着时间的推移最终失去价值。需要降低批量规模以及工作间隔，实现快速功能流，构建一步到位的构建、继承和部署环境，从而减少0.5的数量，多进行0-1的工作，提高整体的吞吐量。</p>
+<h2 id="避免个人英雄主义"><a href="#避免个人英雄主义" class="headerlink" title="避免个人英雄主义"></a>避免个人英雄主义</h2><blockquote>
+<p>以我们当前这种混乱的工作方式，布伦特每天都必须修理千疮百孔的破船。然而，我很确定，布伦特正是船身一开始被凿破的主要原因之一</p>
+</blockquote>
+<p>当大部分人的工作都依靠一个人的时候，那个人也就成了整体的约束点，因为大部分的工作都将无法按时完成，并且在工作之间切换的成本也非常的高。而且无论再聘用多少个员工，由于约束点的存在，工作效率都不会提高。</p>
+<blockquote>
+<p>你在把布伦特的工作标准化，让其他人能够执行。而且，因为你最终把那些步骤记录下来了，所以能在一定程度上保证稳定性和质量。你不仅减少了需要布伦特的工作中心数量，还生成了一些将来能够让其中一些工作中心自动化运行的文档。</p>
+</blockquote>
+<p>我们需要依赖系统而不是依赖个体，因为个体有上限，会阻塞，而系统可以拓展。每解决一个问题，就添加进入知识库，持续的知识积累实际上是在降低成本。</p>
+<p>一时的救世主固然好，但普世的圣经则更有用。没有人无可替代，无论这人有多优秀。当然可能特殊情况下解决问题需要的时间更长些，但缺了谁地球都能转。</p>
+<h2 id="三步工作法"><a href="#三步工作法" class="headerlink" title="三步工作法"></a>三步工作法</h2><h3 id="第一工作法"><a href="#第一工作法" class="headerlink" title="第一工作法"></a>第一工作法</h3><p>帮助我们理解在工作从开发部转移到IT运维部时该如何建立快速工作流，因为这是业务部门与客户之间的衔接。</p>
+<p>为了最大程度地优化工作流，需要将工作可视化，减小每批次大小和等待间隔，通过内建质量杜绝向下游传递缺陷，并持续地优化全局目标。持续构建、集成、测试和部署，按需进行环境搭建，限制在制品数量，构建能够安全地实施变更的系统和组织。<br>通过加快技术价值流的流速，缩短满足内部或者外部客户需求所需的前置时间，尤其是缩短代码部署到生产环境所需的时间，可以有效地提高工作质量和产量，并使企业具有更强的外部竞争力。</p>
+<h3 id="第二工作法"><a href="#第二工作法" class="headerlink" title="第二工作法"></a>第二工作法</h3><p>告诉我们如何缩短以及放大反馈环路，从而在源头上解决质量问题，避免返工，根除除计划外工作的最大源头。通过这种方式，我们能从源头控制质量，并在流程中嵌入相关的知识。这样不仅能创造出更安全的工作系统，还可以在灾难性事故发生前就检测到并解决它。</p>
+<p>及时发现并控制这些问题，直到拥有有效的对策，可以持续地缩短反馈周期和放大反馈环，这是所有现代流程优化方法的一个核心原则，能够创造出组织学习与改进的机会。</p>
+<h3 id="第三工作法"><a href="#第三工作法" class="headerlink" title="第三工作法"></a>第三工作法</h3><p>告诉我们如何建立一种文化，支持动态的、严格的、科学的实验。通过主动地承担风险，不但能从成功中学习，也能从失败中学习。</p>
+<p>既能够鼓励探索、从失败中吸取教训，又能理解反复的事件是精通工作的先决条件。通过持续地缩短和放大反馈环，不断给系统增加压力不仅能创造更安全的工作系统，也能承担更多的风险，并进行试验帮助自己比竞争对手改进得更快，从而在市场竞争中战胜他们。</p>
+<p>不管是谁参与了工作，所有经验都可以持续地积累，组织里的人都可以相互借鉴彼此的经验和智慧，这些不断重复的日常操作赋予我们的技能和经验可以让我们撤回到安全区域并恢复正常运作。</p>
+<h2 id="约束理论"><a href="#约束理论" class="headerlink" title="约束理论"></a>约束理论</h2><p>所有人都在忙碌是一件很可怕的事情，这不是高效的表现，所有在非瓶颈处的更高效率都是无用功，甚至可能还有副作用。</p>
+<ol>
+<li>确认约束点，找不到真正的瓶颈，做什么都是多余。 </li>
+<li>利用约束点，不能让约束点闲着，让它一直运转，而不是需要他才运转。</li>
+<li>迁就约束点，以瓶颈的产出速度作为整个项目的产出速度。使其解决完一个关键后马上解决下一个关键问题，只做关键工作，疏通瓶颈，避免半成品过剩。 </li>
+<li>消灭约束点，可以通过增员，引进新技术，跳过瓶颈等方式提高瓶颈产出速度，降低瓶颈对项目进程的约束。</li>
+<li>发现新的约束点，主要矛盾被解决后，次要矛盾会上升为主要矛盾。在约束点被消灭后，找到新的约束点，聚焦它，将进一步提高产能。工作流将越来越流畅高效。</li>
+</ol>
+<h2 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h2><p>CIO = Career is Over。</p>
+<p>如果你的同事主动告诉你他们要离职，那多半是自愿的。但如果是其他人告诉你的，那他们一定是被迫的。</p>
+<p>领导无需把来自上级的不愉快引导到下级，这会降低职工的归属感。</p>
+<p>2/8定律，团队里20%的人决定了80%的产品实现，并且这20%的人并不一定是产品经理和主管。</p>
+<p>可以不对IT系统做过多无用功就保护公司，这才是你的胜利。如果你能把那些无用功剔出IT系统，你的胜利就更进一步。合理的才是最好的，安全也要合理，一万把锁不见得比一把锁更安全，但是效率一定更低，成本一定更高。</p>
+<p>下属要有说不的勇气，上司要有听不的能力。</p>
+<p>IT不只是一个部门。相反，它就像电力一样无处不在。IT是一种技能，就像能读会算一样。</p>
+<p>未来十年内，几乎所有公司的COO，都应该是出自IT背景的，尤其是具有开发运维一体化实际经验的专业人士。</p>
+<p>IT运维、信息安全和开发等不同职能部门之间的良好合作是成功的关键。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27662792">https://zhuanlan.zhihu.com/p/27662792</a></p>
+<p><a target="_blank" rel="noopener" href="http://ijyun.github.io/2016/04/23/phoenix-project.html">http://ijyun.github.io/2016/04/23/phoenix-project.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.processon.com/outline/view/6131afae5653bb2d6d24f732">https://www.processon.com/outline/view/6131afae5653bb2d6d24f732</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.yisu.com/zixun/288289.html">https://www.yisu.com/zixun/288289.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://alienzhou.com/2020/02/23/the-phoenix-project/">https://alienzhou.com/2020/02/23/the-phoenix-project/</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cynyard Qiu</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/notes/"># notes</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/12/03/hackers-and-painters/">黑客与画家读书笔记</a>
+            
+            
+            <a class="next" rel="next" href="/2022/12/03/the-elements-of-scrum/">Scrum要素读书笔记</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cynyard Qiu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> 
+        
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

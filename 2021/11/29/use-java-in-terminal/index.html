@@ -210,9 +210,9 @@
 <p>额外可以增加其他参数例如</p>
 <ul>
 <li>-g 详细信息</li>
-<li>-d 生成classes的目录，MacOS上没有就会创建，Ubuntu上需要这个目录存在</li>
+<li>-d 生成classes的目录，MacOS上没有就会创建，Ubuntu上需要这个目录存在<h1 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h1></li>
 </ul>
-<h1 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h1><p>得到了class文件后，如何使用 <code>java</code> 命令运行，冒号后面必须添加引用的包的地址，然后选择启动类，这里是Main，最后可以跟各种参数</p>
+<p>得到了class文件后，如何使用 <code>java</code> 命令运行，冒号后面必须添加引用的包的地址，然后选择启动类，这里是Main，最后可以跟各种参数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -classpath .&#x2F;classes:xxxx.jar:xxx.jar Main args[0] args[1] ...</span><br></pre></td></tr></table></figure>
 <h1 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h1><p>打包的话会复杂一些，需要先编译结束过后，创建一个MANIFEST. MF文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar cvfm Main.jar MANIFEST.MF *.class </span><br></pre></td></tr></table></figure>
@@ -242,9 +242,9 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/jar/"># jar</a>
+                        <a href="/tags/java/"># java</a>
                     
-                        <a href="/tags/javac/"># javac</a>
+                        <a href="/tags/terminal/"># terminal</a>
                     
                         
                 </span>
@@ -260,7 +260,7 @@
                 <a class="prev" rel="prev" href="/2021/12/02/common-java-collections/">Java常用数据集合</a>
             
             
-            <a class="next" rel="next" href="/2021/10/04/Daemon-Thread/">用户线程与守护线程</a>
+            <a class="next" rel="next" href="/2021/10/04/daemon-thread/">用户线程与守护线程</a>
             
         </section>
 

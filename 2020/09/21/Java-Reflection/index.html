@@ -200,18 +200,17 @@
         </header>
 
         <div class="post-content">
-            <h2 id="Java反射"><a href="#Java反射" class="headerlink" title="Java反射"></a>Java反射</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html">参考资料</a></p>
-<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+            <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><blockquote>
 <p>Java 反射机制在程序运行时，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性。这种 动态的获取信息 以及 动态调用对象的方法 的功能称为 java 的反射机制。</p>
 </blockquote>
 <ol>
 <li>反射允许我们可以在程序运行时加载和使用编译期间完全未知的.class文件，就是在运行的时候才知道名称的class文件，然后才知道他的完整构造，生成对象实体，调用方法等等</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据路径找到类</span></span><br><span class="line">Class clz = Class.forName(<span class="string">&quot;com.reflect.Apple&quot;</span>);</span><br><span class="line"><span class="comment">// 得到该类的方法</span></span><br><span class="line">Method method = clz.getMethod(<span class="string">&quot;setPrice&quot;</span>, <span class="keyword">int</span>.class);</span><br><span class="line"><span class="comment">// 得到该类的构造器</span></span><br><span class="line">Constructor constructor = clz.getConstructor();</span><br><span class="line"><span class="comment">// 得到具体对象</span></span><br><span class="line">Object object = constructor.newInstance();</span><br><span class="line"><span class="comment">// 在该对象上执行该方法</span></span><br><span class="line">method.invoke(object, <span class="number">4</span>);</span><br><span class="line"><span class="comment">//等价于：</span></span><br><span class="line">Apple apple = <span class="keyword">new</span> Apple(); <span class="comment">//直接初始化，「正射」</span></span><br><span class="line">apple.setPrice(<span class="number">4</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ol>
+<h1 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h1><ol>
 <li>可以实现动态创建对象和编译，体现出很大的灵活性，特别是在J2EE的开发中。比如，一个大型的软件，当这个程序编译后，当发现需要更新某些功能时，我们不可能要用户把以前的卸载，再重新安装新的版本。采用静态的话，需要把整个程序重新编译一次才可以实现功能的更新，而采用反射机制的话，它就可以不用卸载，只需要在运行时才动态的创建和编译，就可以实现该功能。</li>
 </ol>
-<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p><strong>注意一定要在try/catch中执行代码</strong></p>
+<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><p><strong>注意一定要在try/catch中执行代码</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Class clz = Class.forName(<span class="string">&quot;com.reflect.api.Apple&quot;</span>);</span><br><span class="line"></span><br><span class="line">Constructor appleConstructor = clz.getConstructor();</span><br><span class="line"></span><br><span class="line">Object appleObj = appleConstructor.newInstance();</span><br><span class="line"></span><br><span class="line">Method setPriceMethod = clz.getMethod(<span class="string">&quot;setPrice&quot;</span>, <span class="keyword">int</span>.class);</span><br><span class="line"></span><br><span class="line">setPriceMethod.invoke(appleObj, <span class="number">14</span>);</span><br><span class="line"></span><br><span class="line">Method getPriceMethod = clz.getMethod(<span class="string">&quot;getPrice&quot;</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">&quot;Apple Price:&quot;</span> + getPriceMethod.invoke(appleObj));</span><br></pre></td></tr></table></figure>
 <ol>
 <li><p>获取类的Class对象实例</p>
@@ -227,7 +226,7 @@
 <li><p>利用invoke调用方法(传入反射得到的对象Object）</p>
 </li>
 </ol>
-<h3 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h3><ul>
+<h1 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h1><ul>
 <li>获取Class对象</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class clz = Class.forName(<span class="string">&quot;java.lang.String&quot;</span>);</span><br><span class="line"></span><br><span class="line">Class clz = String.class;</span><br><span class="line"></span><br><span class="line">String str = <span class="keyword">new</span> String(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line"></span><br><span class="line">Class clz = str.getClass();</span><br></pre></td></tr></table></figure>
@@ -243,9 +242,9 @@
 <li>获取类的所有方法，用methods替换上面的Fields，获取单个方法的时候使用getMethod或者getDeclaredMethod，并且在后面括号加上方法名，传入参数的类型.class，</li>
 </ul>
 <p>注意：如果是私有方法，需要调用setAccessible(true)，私有属性同理</p>
-<h3 id="举例"><a href="#举例" class="headerlink" title="举例:"></a>举例:</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.reflect.Apple&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="举例"><a href="#举例" class="headerlink" title="举例:"></a>举例:</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.reflect.Apple&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>Spring 便会在启动的时候利用反射去加载对应的 Apple 类。而当 Apple 类不存在或发生启发异常时，异常堆栈便会将异常指向调用的 invoke 方法。</p>
-<h4 id="Invoke-方法解析"><a href="#Invoke-方法解析" class="headerlink" title="Invoke()方法解析"></a>Invoke()方法解析</h4><p>注意看源码</p>
+<h2 id="Invoke-方法解析"><a href="#Invoke-方法解析" class="headerlink" title="Invoke()方法解析"></a>Invoke()方法解析</h2><p>注意看源码</p>
 <ol>
 <li><p>代理模式，三个MethodAccessor实现类，Delegating，Native以及无前缀的MechodAccessorImpl</p>
 </li>
@@ -269,11 +268,12 @@
 </blockquote>
 </li>
 </ol>
-<h4 id="总体流程"><a href="#总体流程" class="headerlink" title="总体流程"></a>总体流程</h4><blockquote>
+<h2 id="总体流程"><a href="#总体流程" class="headerlink" title="总体流程"></a>总体流程</h2><blockquote>
 <p>图源博客园@陈树义</p>
 </blockquote>
 <p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1599657507381-c1bb3b06-152c-4121-9128-de7e4f51c038.png"></p>
-<h4 id="绕过编译检查"><a href="#绕过编译检查" class="headerlink" title="绕过编译检查"></a>绕过编译检查</h4><p>在编译的时候，泛型会限制集合内元素类型保持一致，但是在运行期泛型不起作用，那么可以通过反射给一个存放String类型的list，在运行的时候添加int</p>
+<h2 id="绕过编译检查"><a href="#绕过编译检查" class="headerlink" title="绕过编译检查"></a>绕过编译检查</h2><p>在编译的时候，泛型会限制集合内元素类型保持一致，但是在运行期泛型不起作用，那么可以通过反射给一个存放String类型的list，在运行的时候添加int</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html">https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html</a></p>
 
         </div>
 
@@ -297,9 +297,9 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/spring/"># spring</a>
+                        <a href="/tags/code/"># code</a>
                     
-                        <a href="/tags/java/"># java</a>
+                        <a href="/tags/reflection/"># reflection</a>
                     
                         
                 </span>
@@ -312,10 +312,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/10/27/Paxos/">Paxos简述</a>
+                <a class="prev" rel="prev" href="/2020/10/27/paxos-preview/">Paxos简述</a>
             
             
-            <a class="next" rel="next" href="/2020/08/24/Linux-System-Foundation/">Linux系统基础</a>
+            <a class="next" rel="next" href="/2020/08/24/linux-foundation/">Linux系统基础</a>
             
         </section>
 
