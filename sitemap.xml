@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://cynyard999.github.io/2023/02/27/reliable-tcp/</loc>
+    
+    <lastmod>2023-03-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://cynyard999.github.io/2022/12/10/dma-and-zero-copy/</loc>
     
     <lastmod>2023-03-15</lastmod>
@@ -432,6 +441,13 @@
   
   <url>
     <loc>https://cynyard999.github.io/tags/https/</loc>
+    <lastmod>2023-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cynyard999.github.io/tags/tcp/</loc>
     <lastmod>2023-03-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
