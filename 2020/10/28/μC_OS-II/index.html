@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="referrer" content="no-referrer">
+
+    <meta name="author" content="Cynyard Qiu">
+
+
+
+
+
+<title>μC/OS-II实现RMS调度算法 | Cynyard&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/moon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cynyard&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cynyard&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">μC/OS-II实现RMS调度算法</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cynyard Qiu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 28, 2020&nbsp;&nbsp;20:15:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Course/">Course</a>
+                            
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="在μC-OS-II上实现RMS调度算法"><a href="#在μC-OS-II上实现RMS调度算法" class="headerlink" title="在μC/OS-II上实现RMS调度算法"></a>在μC/OS-II上实现RMS调度算法</h1><h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><blockquote>
+<p>一个课程作业，debug还蛮久的</p>
+<p>参考实验目录下μCOSII下的代码 <a target="_blank" rel="noopener" href="https://www.micrium.com/download/micrium_win32_kernel/">https://www.micrium.com/download/micrium_win32_kernel/</a></p>
+</blockquote>
+<p>在μC/OS-II上实现RMS调度算法，并且打印每次进程切换的信息（任务之间有数据相关性和任务之间没有数据相关性），以及打印可能会发生的deadline violations</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><h3 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h3><p>visual Studio 2017 for Windows</p>
+<h3 id="MICRIUM-PRODUCT"><a href="#MICRIUM-PRODUCT" class="headerlink" title="MICRIUM PRODUCT"></a>MICRIUM PRODUCT</h3><ul>
+<li><p>uC/OS-II  v2.92.13 OR uC/OS-III v3.06.02</p>
+</li>
+<li><p>uC/CPU    v1.31.01</p>
+</li>
+<li><p>uC/LIB    v1.38.02</p>
+</li>
+</ul>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="更改每秒钟的tick数"><a href="#更改每秒钟的tick数" class="headerlink" title="更改每秒钟的tick数"></a>更改每秒钟的tick数</h3><p>方便进程调试</p>
+<p>在os_cfg.h文件下将100u改为1u，每秒一个tick</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OS_TICK_STEP_EN           1u   <span class="comment">/* Enable tick stepping feature for uC/OS-View                  */</span></span></span><br><span class="line"><span class="comment">//#define OS_TICKS_PER_SEC        100u   /* Set the number of ticks in one second                        */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OS_TICKS_PER_SEC        1u</span></span><br></pre></td></tr></table></figure>
+<h3 id="更改默认TCB结构"><a href="#更改默认TCB结构" class="headerlink" title="更改默认TCB结构"></a>更改默认TCB结构</h3><p>在ucos_ii.h文件下的os_tcb结构体中新增两个参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">os_tcb</span> &#123;</span></span><br><span class="line">  INT32U      runTime;        <span class="comment">// 这个进程已经运行的时间</span></span><br><span class="line">  INT32U      executionTime;      <span class="comment">// 每个进程需要执行的时间  </span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="取消无关进程的创建（61，62优先级的进程）"><a href="#取消无关进程的创建（61，62优先级的进程）" class="headerlink" title="取消无关进程的创建（61，62优先级的进程）"></a>取消无关进程的创建（61，62优先级的进程）</h3><p>进入OSInit()函数，在os_core.c文件中注释掉Stat和Tmr进程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OS_TASK_STAT_EN &gt; 0u</span></span><br><span class="line">    <span class="comment">//OS_InitTaskStat();                                           /* Create the Statistic Task                */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OS_TMR_EN &gt; 0u</span></span><br><span class="line">    <span class="comment">//OSTmr_Init();                                                /* Initialize the Timer Manager             */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="取消无关信息的打印"><a href="#取消无关信息的打印" class="headerlink" title="取消无关信息的打印"></a>取消无关信息的打印</h3><p>在os_cpu_c.c文件的1237行，取消打印running信息</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> (OS_MSG_TRACE &gt; 0u)</span></span><br><span class="line">    <span class="comment">//OS_Printf(&quot;Task[%3.1d] &#x27;%s&#x27; Running\n&quot;, p_tcb-&gt;OSTCBPrio, p_tcb-&gt;OSTCBTaskName);</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="创建三个进程"><a href="#创建三个进程" class="headerlink" title="创建三个进程"></a>创建三个进程</h3><h4 id="声明三个进程的执行时间和周期"><a href="#声明三个进程的执行时间和周期" class="headerlink" title="声明三个进程的执行时间和周期"></a>声明三个进程的执行时间和周期</h4><p>在main.c文件下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INT32U execution_times[] = &#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span> &#125;;</span><br><span class="line">INT32U periods[] = &#123; <span class="number">4</span>,<span class="number">5</span>,<span class="number">10</span> &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="创建三个进程的任务代码"><a href="#创建三个进程的任务代码" class="headerlink" title="创建三个进程的任务代码"></a>创建三个进程的任务代码</h4><p>在main.c文件下创建三个Task函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span>  <span class="keyword">void</span>  <span class="title">Task1</span><span class="params">(<span class="keyword">void</span>  *p_arg)</span></span>; <span class="comment">// 声明</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Task1</span><span class="params">(<span class="keyword">void</span> *p_arg)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 存放信号量pend和post的错误信息</span></span><br><span class="line">  INT8U  err;</span><br><span class="line">  <span class="comment">// 执行时间</span></span><br><span class="line">  <span class="keyword">int</span> time = execution_times[<span class="number">0</span>];</span><br><span class="line">  <span class="comment">// 将执行所需时间添加到TCB中</span></span><br><span class="line">  OSTCBCur-&gt;executionTime = time;</span><br><span class="line">  <span class="comment">// 执行周期 </span></span><br><span class="line">  <span class="keyword">int</span> period = periods[<span class="number">0</span>];</span><br><span class="line">  <span class="comment">// 第一个周期的开始时间</span></span><br><span class="line">  <span class="keyword">int</span> start_time = OSTimeGet();</span><br><span class="line">  <span class="comment">// APP_TRACE_DBG((&quot;task 1 start at %d \n&quot;, start_time));</span></span><br><span class="line">    <span class="comment">// 设置第一个deadline为第一个周期结束</span></span><br><span class="line">  <span class="keyword">int</span> deadline = period;</span><br><span class="line">  <span class="keyword">int</span> end_time, delayed_time;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)          </span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">//OSSemPend(pevent, 0u, &amp;err); //0u代表会永远等待semaphore或者直到资源被释放</span></span><br><span class="line">    <span class="keyword">while</span> (OSTCBCur-&gt;runTime &lt; time);</span><br><span class="line">    <span class="comment">//OSSemPost(pevent);</span></span><br><span class="line">    end_time = OSTimeGet();</span><br><span class="line">    delayed_time = deadline - end_time;</span><br><span class="line">        <span class="comment">// 出现了deadline violated的情况</span></span><br><span class="line">    <span class="keyword">if</span> (delayed_time &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Deadline Violated: Task %d expected to finish before %d but finished on %d\n&quot;</span>, OSTCBCur-&gt;OSTCBPrio, deadline, end_time);</span><br><span class="line">    &#125;</span><br><span class="line">        <span class="comment">// 可能会存在延时了多个周期进程才完成的情况，用while语句来使得delayed_time为正数</span></span><br><span class="line">    <span class="keyword">while</span> (delayed_time &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      delayed_time = delayed_time + period;</span><br><span class="line">    &#125;</span><br><span class="line">    OSTCBCur-&gt;runTime = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// deadline增加一个周期的时间</span></span><br><span class="line">    deadline = deadline + period;</span><br><span class="line">    OSTimeDly(delayed_time);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="创建三个进程所需的栈空间"><a href="#创建三个进程所需的栈空间" class="headerlink" title="创建三个进程所需的栈空间"></a>创建三个进程所需的栈空间</h4><p>在main.c文件下添加二维数组</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span>  OS_STK  UserTaskStk[<span class="number">3</span>][APP_CFG_STARTUP_TASK_STK_SIZE];</span><br></pre></td></tr></table></figure>
+<h4 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h4><p>在main.c文件下注释掉实例代码，然后添加三个进程的创建代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">OSTaskCreateExt( Task1,                                          </span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    &amp;UserTaskStk[<span class="number">0</span>][APP_CFG_STARTUP_TASK_STK_SIZE <span class="number">-1</span>],</span><br><span class="line">    <span class="number">1u</span>,</span><br><span class="line">    <span class="number">1u</span>,</span><br><span class="line">    &amp;UserTaskStk[<span class="number">0</span>][<span class="number">0</span>],</span><br><span class="line">    APP_CFG_STARTUP_TASK_STK_SIZE,</span><br><span class="line">    <span class="number">0u</span>,</span><br><span class="line">    (OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR));</span><br><span class="line">  OSTaskCreateExt(Task2,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    &amp;UserTaskStk[<span class="number">1</span>][APP_CFG_STARTUP_TASK_STK_SIZE <span class="number">-1</span>],</span><br><span class="line">    <span class="number">2u</span>,</span><br><span class="line">    <span class="number">2u</span>,</span><br><span class="line">    &amp;UserTaskStk[<span class="number">1</span>][<span class="number">0</span>],</span><br><span class="line">    APP_CFG_STARTUP_TASK_STK_SIZE,</span><br><span class="line">    <span class="number">0u</span>,</span><br><span class="line">    (OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR));</span><br><span class="line">  OSTaskCreateExt(Task3,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    &amp;UserTaskStk[<span class="number">2</span>][APP_CFG_STARTUP_TASK_STK_SIZE <span class="number">-1</span>],</span><br><span class="line">    <span class="number">3u</span>,</span><br><span class="line">    <span class="number">3u</span>,</span><br><span class="line">    &amp;UserTaskStk[<span class="number">2</span>][<span class="number">0</span>],</span><br><span class="line">    APP_CFG_STARTUP_TASK_STK_SIZE,</span><br><span class="line">    <span class="number">0u</span>,</span><br><span class="line">    (OS_TASK_OPT_STK_CHK | OS_TASK_OPT_STK_CLR));</span><br></pre></td></tr></table></figure>
+<h3 id="添加代码记录当前TCB运行时间"><a href="#添加代码记录当前TCB运行时间" class="headerlink" title="添加代码记录当前TCB运行时间"></a>添加代码记录当前TCB运行时间</h3><p>记录运行时间以便与每个task函数中的 <code>while (OSTCBCur-&gt;runTime &lt; time);</code> 跳出循环，执行结束，让出处理器。</p>
+<p>在os_core.c的OSTimeTick()函数中修改</p>
+<blockquote>
+<p>OSTimeTick()函数被OSTickW32 (LPVOID  p_arg)函数调用，用来进行tick中断，增加系统时间OStime，并且在每个OStime+1的时候，将TCB链表中的每个tcb的等待时间-1，如果等待时间变为0，就将其加入到就绪表中（OSRdyGrp和OSRdyTbl）</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OS_TIME_GET_SET_EN &gt; 0u</span></span><br><span class="line">    OS_ENTER_CRITICAL();                                   <span class="comment">/* Update the 32-bit tick counter               */</span></span><br><span class="line">    OSTime++;</span><br><span class="line">  OSTCBCur-&gt;runTime++;                 <span class="comment">// 添加代码：当前正在运行的tcb的运行时间+1</span></span><br><span class="line">    OS_TRACE_TICK_INCREMENT(OSTime);</span><br><span class="line">    OS_EXIT_CRITICAL();</span><br></pre></td></tr></table></figure>
+<h3 id="增加进程切换信息的打印代码"><a href="#增加进程切换信息的打印代码" class="headerlink" title="增加进程切换信息的打印代码"></a>增加进程切换信息的打印代码</h3><h4 id="complete信息"><a href="#complete信息" class="headerlink" title="complete信息"></a>complete信息</h4><p>在os_core.c文件下的OS_Sched (void)函数中增加打印信息的代码(下面代码的最后一行为添加的代码）</p>
+<blockquote>
+<p>OS_Sched (void)函数主要是用来在一个进程放弃处理器的时候，通过OS_SchedNew()函数选出新的进程</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">OS_ENTER_CRITICAL();</span><br><span class="line">  <span class="comment">// 如果中断服务例程都结束了,CPU处于空闲，看是否有rdy的任务</span></span><br><span class="line">    <span class="keyword">if</span> (OSIntNesting == <span class="number">0u</span>) &#123;                          <span class="comment">/* Schedule only if all ISRs done and ...       */</span></span><br><span class="line">        <span class="keyword">if</span> (OSLockNesting == <span class="number">0u</span>) &#123;                     <span class="comment">/* ... scheduler is not locked                  */</span></span><br><span class="line">            <span class="comment">// 找到OSPrioHighRdy</span></span><br><span class="line">            OS_SchedNew();</span><br><span class="line">      <span class="comment">// 根据priority为下标，找到HighRdyTCB</span></span><br><span class="line">            OSTCBHighRdy = OSTCBPrioTbl[OSPrioHighRdy];</span><br><span class="line">      <span class="comment">// 如果当前的不是最高优先级的在运行，switch</span></span><br><span class="line">            <span class="keyword">if</span> (OSPrioHighRdy != OSPrioCur) &#123;          <span class="comment">/* No Ctx Sw if current task is highest rdy     */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OS_TASK_PROFILE_EN &gt; 0u</span></span><br><span class="line">                OSTCBHighRdy-&gt;OSTCBCtxSwCtr++;         <span class="comment">/* Inc. # of context switches to this task      */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">                OSCtxSwCtr++;                          <span class="comment">/* Increment context switch counter             */</span></span><br><span class="line">        <span class="comment">// 增加打印信息的的代码</span></span><br><span class="line">                <span class="built_in">printf</span>( <span class="string">&quot;%d\t%12s%6d%6d\n&quot;</span>, OSTime, <span class="string">&quot;Complete&quot;</span>, OSPrioCur, OSTCBHighRdy-&gt;OSTCBPrio);</span><br></pre></td></tr></table></figure>
+<h4 id="preempt信息"><a href="#preempt信息" class="headerlink" title="preempt信息"></a>preempt信息</h4><p>在os_core.c文件下的OSIntExit (void)函数中增加打印信息的代码(下面代码的最后一行为添加的代码）</p>
+<blockquote>
+<p>OSIntExit (void)函数在每个时钟中断中，在OSTimeTick()过后被调用，在没有ISR和没有被lock的情况下，通过OS_SchedNew()函数判断是否有更高优先级的tcb进入了就绪表，如果有那么就进行进程切换OSIntCtxSw()   </p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">OSIntExit</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OS_CRITICAL_METHOD == 3u                               <span class="comment">/* Allocate storage for CPU status register */</span></span></span><br><span class="line">    OS_CPU_SR  cpu_sr = <span class="number">0u</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>    </span></span><br><span class="line">  <span class="keyword">if</span> (OSRunning == OS_TRUE) &#123;</span><br><span class="line">        OS_ENTER_CRITICAL();</span><br><span class="line">        <span class="keyword">if</span> (OSIntNesting &gt; <span class="number">0u</span>) &#123;                           <span class="comment">/* Prevent OSIntNesting from wrapping       */</span></span><br><span class="line">            OSIntNesting--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (OSIntNesting == <span class="number">0u</span>) &#123;                          <span class="comment">/* Reschedule only if all ISRs complete ... */</span></span><br><span class="line">            <span class="keyword">if</span> (OSLockNesting == <span class="number">0u</span>) &#123;                     <span class="comment">/* ... and not locked.                      */</span></span><br><span class="line">        OS_SchedNew();</span><br><span class="line">                OSTCBHighRdy = OSTCBPrioTbl[OSPrioHighRdy];</span><br><span class="line">                <span class="keyword">if</span> (OSPrioHighRdy != OSPrioCur) &#123;          <span class="comment">/* No Ctx Sw if current task is highest rdy */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OS_TASK_PROFILE_EN &gt; 0u</span></span><br><span class="line">                    OSTCBHighRdy-&gt;OSTCBCtxSwCtr++;         <span class="comment">/* Inc. # of context switches to this task  */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">                    OSCtxSwCtr++;                          <span class="comment">/* Keep track of the number of ctx switches */</span></span><br><span class="line">          <span class="comment">// 打印，即将开始更高优先级的任务</span></span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">&quot;%d\t%12s%6d%6d\n&quot;</span>, OSTime, <span class="string">&quot;Preempt&quot;</span>, OSPrioCur, OSTCBHighRdy-&gt;OSTCBPrio);</span><br><span class="line">                    ...</span><br><span class="line">&#125;</span><br><span class="line">                </span><br></pre></td></tr></table></figure>
+<h3 id="运行项目"><a href="#运行项目" class="headerlink" title="运行项目"></a>运行项目</h3><p>运行代码截图如下（执行时间分别为1，2，2，周期分别为4，5，10）</p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603882462769-fd5c2c86-4e80-4e5e-8184-26c723ea2f45.png"></p>
+<h4 id="运行问题分析"><a href="#运行问题分析" class="headerlink" title="运行问题分析"></a>运行问题分析</h4><p>通过分析，在时间点8本应该任务3完成，然后跳转到任务1，即显示 <code>8 complete 3 1</code> ，但是在截图中却显示，在时间点8，任务3被任务1抢断，直到时间点9的时候才和任务1一起执行结束，这导致了任务3的执行完成时间往后顺延了一个时间点，是存在问题的，即：</p>
+<p><strong>高优先级到来和低优先级任务完成同时到来的时候，将会执行高优先级抢占低优先级而不是低优先级完成过渡到高优先级。</strong></p>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><p>通过观察源码可以知道，</p>
+<ul>
+<li><p>preempt打印语句出现在OSIntExit(）中</p>
+</li>
+<li><p>而OSIntExit只会在每个时钟中断中被调用，即被OSTickW32 ()调用，这个函数的主要作用是进入中断，进行时钟+1</p>
+</li>
+<li><p>OSIntExit ()函数在每个时钟中断中，在OSTimeTick()过后被调用，通过OS_SchedNew()函数判断是否有更高优先级的tcb进入了就绪表，如果有那么就进行进程切换OSIntCtxSw()。</p>
+</li>
+<li><p>所以，当OSTime+1，低优先级的执行时间runTime+1过后，在OSTimeTick()总会检查是否有高优先级的任务就绪，在OSIntExit ()进行任务切换</p>
+</li>
+<li><p><strong>所以，就算低优先级任务的执行时间runTime已经达到了所需要的执行时间execution_time，即实际执行完毕的时候只要有高优先级任务就绪，就会被抢占，显示preempt，而在task()函数中，现在还在内部while的循环中，就被中断了，所以最后低优先级任务的结束时间也会往后拖延（时间为高优先级执行所需时间）</strong></p>
+</li>
+</ul>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>在OS_SchedNew()函数中，新增一个逻辑，当一个任务的运行时间等于所需执行时间的时候（已经执行完毕），将不会选举出更高优先级的任务（即不会被抢占）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span>  <span class="keyword">void</span>  <span class="title">OS_SchedNew</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> OS_LOWEST_PRIO &lt;= 63u                        <span class="comment">/* See if we support up to 64 tasks                   */</span></span></span><br><span class="line">    INT8U   y;</span><br><span class="line">    y             = OSUnMapTbl[OSRdyGrp];</span><br><span class="line">    OSPrioHighRdy = (INT8U)((y &lt;&lt; <span class="number">3u</span>) + OSUnMapTbl[OSRdyTbl[y]]);</span><br><span class="line">    <span class="comment">// 下面为增加代码</span></span><br><span class="line">  <span class="keyword">if</span> (OSTCBCur == <span class="literal">NULL</span>)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (OSTCBCur-&gt;runTime == OSTCBCur-&gt;executionTime)</span><br><span class="line">  &#123;</span><br><span class="line">    OSPrioHighRdy = OSTCBCur-&gt;OSTCBPrio;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>重新执行代码后，问题解决</p>
+<h3 id="数据相关性的实现"><a href="#数据相关性的实现" class="headerlink" title="数据相关性的实现"></a>数据相关性的实现</h3><p>通过信号量的pend和post实现任务互斥</p>
+<p>在main.c文件声明并且创建信号量</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> OS_EVENT * pevent;</span><br><span class="line">...</span><br><span class="line"><span class="function"><span class="keyword">int</span>  <span class="title">main</span> <span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">  pevent = OSSemCreate(<span class="number">1</span>);                    <span class="comment">// 创建信号量</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>在task1函数和task3函数下，增加pend和post代码，如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Task1</span><span class="params">(<span class="keyword">void</span> *p_arg)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// 保存信号量pend和post的错误信息</span></span><br><span class="line">  INT8U  err;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)          </span><br><span class="line">  &#123;</span><br><span class="line">    OSSemPend(pevent, <span class="number">0u</span>, &amp;err);</span><br><span class="line">    <span class="keyword">while</span> (OSTCBCur-&gt;runTime &lt; time);</span><br><span class="line">    OSSemPost(pevent);</span><br><span class="line">        ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;<span class="comment">// task3同理</span></span><br></pre></td></tr></table></figure>
+<h2 id="执行结果"><a href="#执行结果" class="headerlink" title="执行结果"></a>执行结果</h2><h3 id="无数据相关性"><a href="#无数据相关性" class="headerlink" title="无数据相关性"></a>无数据相关性</h3><p>执行时间分别为1，2，2，周期分别为4，5，10，优先级和任务名分别为1，2，3</p>
+<p>注意到在时间8任务3完成的时候，直接过渡到任务1，而不是被任务1抢占</p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603884123407-d3a51b44-b58f-40fd-b547-1bf3938445f4.png"></p>
+<h3 id="有数据相关性"><a href="#有数据相关性" class="headerlink" title="有数据相关性"></a>有数据相关性</h3><h4 id="举例1"><a href="#举例1" class="headerlink" title="举例1"></a>举例1</h4><p>执行时间分别为1，2，2，周期分别为4，5，10，优先级和任务名分别为1，2，3</p>
+<p>在时间点4，本来1应该抢占3，但是由于数据相关性，交给3继续运行，在时间点5，任务3完成的时候，任务1再开始运行</p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603884322676-78797245-b788-41de-a95d-255aecd25411.png"></p>
+<h4 id="举例2"><a href="#举例2" class="headerlink" title="举例2"></a>举例2</h4><p>执行时间分别为1，3，4，周期分别为3，6，9，优先级和任务名分别为1，2，3</p>
+<p>由于任务1和任务3的数据相关性，会导致两个任务不能在该执行周期内完成任务</p>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603884682279-cfb0a052-83da-4d0d-b24d-e4cfafac64d3.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>可以继续在SchedNew中实现新的算法，例如EDF之类的，系统里面有一个实时修改优先级的函数，记不到了</li>
+<li>debug那里好折磨，看了好久</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cynyard Qiu</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/schedule/"># schedule</a>
+                    
+                        <a href="/tags/os/"># os</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/11/01/DHT/">分布式哈希表</a>
+            
+            
+            <a class="next" rel="next" href="/2020/10/27/paxos-preview/">Paxos简述</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cynyard Qiu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> 
+        
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

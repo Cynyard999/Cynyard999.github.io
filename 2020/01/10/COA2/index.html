@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="referrer" content="no-referrer">
+
+    <meta name="author" content="Cynyard Qiu">
+
+
+
+
+
+<title>计算机组织机构（2） | Cynyard&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/moon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cynyard&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cynyard&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">计算机组织机构（2）</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cynyard Qiu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 10, 2020&nbsp;&nbsp;12:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Course/">Course</a>
+                            
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="课程笔记"><a href="#课程笔记" class="headerlink" title="课程笔记"></a>课程笔记</h1><h2 id="Lecture10-Error"><a href="#Lecture10-Error" class="headerlink" title="Lecture10 Error"></a>Lecture10 Error</h2><h3 id="错误分类"><a href="#错误分类" class="headerlink" title="错误分类"></a>错误分类</h3><h4 id="Hard-Failure"><a href="#Hard-Failure" class="headerlink" title="Hard Failure"></a>Hard Failure</h4><ul>
+<li><p>永久的物理缺陷导致的一个或者多个存储单元在持续为1或者0，或者错误的在10之间切换</p>
+</li>
+<li><p>主要由现实中的恶劣环境，制造的缺陷，或者损伤引起</p>
+</li>
+</ul>
+<h4 id="Soft-Failure"><a href="#Soft-Failure" class="headerlink" title="Soft Failure"></a>Soft Failure</h4><ul>
+<li><p>随机的，非破坏的改变了某个或者某些存储单元的内容，但是没有损坏存储器</p>
+</li>
+<li><p>主要是电源问题或者α粒子的放射性衰减造成的</p>
+</li>
+</ul>
+<h3 id="纠错"><a href="#纠错" class="headerlink" title="纠错"></a>纠错</h3><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><p>通过某个函数得到一些数据存储额外信息，</p>
+<h4 id="主要流程"><a href="#主要流程" class="headerlink" title="主要流程"></a>主要流程</h4><ul>
+<li><p>对于M位的数据D，通过某个函数得到一个K位的C，一起存入</p>
+</li>
+<li><p>取出的时候D’与C’，根据取出的D’与f得到C’’再与取出的C’进行比较</p>
+</li>
+<li><p>没有错误就输出</p>
+</li>
+<li><p>有错误检测是否能改正，改正了再输出，否则报错</p>
+</li>
+</ul>
+<h3 id="奇偶校验"><a href="#奇偶校验" class="headerlink" title="奇偶校验"></a>奇偶校验</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><ul>
+<li><p>用一位数字判断D里的1到底是奇数还是偶数</p>
+</li>
+<li><p>偶数校验：如果D里的1的数量是偶数，那么返回0，加上C过后，<strong>1的数量是偶数</strong></p>
+</li>
+<li><p>奇数如果D里的1的数量是奇数，返回0，否则返回1，为偶数校验的结果再与1取异或，加上C过后，<strong>1的数量是奇数</strong></p>
+</li>
+</ul>
+<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><ul>
+<li><p>取S=C’’xorC’</p>
+</li>
+<li><p>如果S等于1，那么说明两者不同，说明D’+C’中有奇数个错误发生，使得到的C’’发生值的变化</p>
+</li>
+<li><p>如果S等于0，那么说明两者相同，说明D’+C’中有偶数个错误发生或者没有错误发生</p>
+</li>
+</ul>
+<h4 id="优点缺点"><a href="#优点缺点" class="headerlink" title="优点缺点"></a>优点缺点</h4><ul>
+<li><p>低能耗，简单</p>
+</li>
+<li><p>但是不能定位到错误发生的准确位置，也不能用来纠错，当错误个数为偶数的时候无法判断，并且出错的概率需要很低，只能对一个很短的数据校验</p>
+</li>
+</ul>
+<h4 id="为什么大批量的数据不使用奇偶校验"><a href="#为什么大批量的数据不使用奇偶校验" class="headerlink" title="为什么大批量的数据不使用奇偶校验"></a>为什么大批量的数据不使用奇偶校验</h4><ul>
+<li><p>在每个字符后再增加一位校验码会增加大量的开销，</p>
+</li>
+<li><p>尤其是网络通信中，对传输的二进制比特流没有必要再分解成一个个字符，无法采用奇偶校验码，</p>
+</li>
+<li><p>而且奇偶校验码以及海明码只能对于一位进行纠错，如果数据过长会增加多位出错的概率</p>
+</li>
+</ul>
+<h3 id="Hamming-Code"><a href="#Hamming-Code" class="headerlink" title="Hamming Code"></a>Hamming Code</h3><blockquote>
+<p>假设只有一位出错 也是校验一位 <strong>海明码是存在在数据内部的</strong></p>
+</blockquote>
+<h4 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h4><ul>
+<li>把数据分为多个组，对每一个组进行奇偶校验</li>
+</ul>
+<h4 id="流程-1"><a href="#流程-1" class="headerlink" title="流程"></a>流程</h4><ul>
+<li><p>M位分为K个组，共有M%K个组</p>
+</li>
+<li><p>每个组需要一位，共需要K位</p>
+</li>
+<li><p>读取数据的时候对每一个组取奇偶校验，得到一个新的K位code，与取出的K作比较</p>
+</li>
+</ul>
+<h4 id="K的取法"><a href="#K的取法" class="headerlink" title="K的取法"></a>K的取法</h4><ul>
+<li><p>由于每种情况需要用一个K位的code，校验码来标记，那么2^k ≥m+r+1 （1就是没有错的那种情况）</p>
+</li>
+<li><p>校验码的位置，在2的幂的位置，1，2，4，8，16位等等，其他位为数据位，用<strong>syndrome word</strong>标记他的位置</p>
+<ul>
+<li><p>位置从1开始算，C1对应位置0001，C2对应0010，C3对应0100，C4对应1000，依次类推</p>
+</li>
+<li><p>位置1101的数，就由C1，C3，C4来校验，位置的最低位为1的数一起计算C1</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603726781205-156af9ff-586a-4cc5-a70a-4901da76000a.png"></p>
+<h4 id="检验"><a href="#检验" class="headerlink" title="检验"></a>检验</h4><ul>
+<li><p>最后根据取出得到的校验码和取出的校验码作比较，算出的S（<strong>故障字</strong>）即为出错的那一位的位置，在整个M+K中的位置</p>
+</li>
+<li><p>如果只有一个1，说明是检测位错误，不用改正</p>
+</li>
+</ul>
+<p><img src="https://cynyard-blog-pics.oss-cn-beijing.aliyuncs.com/image/1603726836976-fc5680a3-f6fe-4d7f-b8af-ed5dceece7e8.png"></p>
+<h4 id="SEC-DED"><a href="#SEC-DED" class="headerlink" title="SEC-DED"></a>SEC-DED</h4><blockquote>
+<p>单一错误改正，两位错误检测，增加一位校验码，这个校验码由位置没有3个1的Data计算得到，即让每个D都参加三个校验码的形成过程</p>
+</blockquote>
+<ul>
+<li><p>数据中当有一位不同的时候，将会有三个Checkbits被改变</p>
+</li>
+<li><p>得到的结果S如果只有一个1，说明是某个checkbit改变了</p>
+</li>
+<li><p>如果只有两个1，说明在整个M+K中有两个error发生，并且找不到</p>
+</li>
+<li><p>如果有三个1，能够定位到八个数据中错误的位置，S的低四位则为D的位置</p>
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cynyard Qiu</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/computer-organization/"># computer-organization</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/08/10/Cpp/">C++高级程序设计</a>
+            
+            
+            <a class="next" rel="next" href="/2020/01/10/COA/">计算机组织机构（1）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cynyard Qiu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> 
+        
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

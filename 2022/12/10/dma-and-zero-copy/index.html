@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="referrer" content="no-referrer">
+
+    <meta name="author" content="Cynyard Qiu">
+
+
+
+
+
+<title>DMA和零拷贝 | Cynyard&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/moon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Cynyard&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Cynyard&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">DMA和零拷贝</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Cynyard Qiu</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 10, 2022&nbsp;&nbsp;20:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/OS/">OS</a>
+                            
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>突然想到了去年面试时不会的一个面试题，现在才发现当时面试官想要问什么</p>
+<p>进程为了一次简单的IO就需要产生四次上下文切换，高并发的场景下会对性能产生较大的影响，如何降低这种影响？</p>
+<ul>
+<li>使用用户缓冲区+内核缓冲区（某些情况能避免了上下文切换/读取外部设备）</li>
+<li>IO流程优化</li>
+</ul>
+<h1 id="传统IO切换流程"><a href="#传统IO切换流程" class="headerlink" title="传统IO切换流程"></a>传统IO切换流程</h1><p>为了安全起见，避免进程访问到全部的内存，用户进程通常都是运行在用户空间中，这样只能访问到一个局部的内存空间，即在用户态执行，当程序使用内核空间的时候，就需要通过系统调用来进入内核态</p>
+<p>对于一次简单的<strong>文件传输过程</strong>来说，用户进程通过read方法向操作系统发起调用，进行上下文切换，当数据从磁盘拷贝到读缓冲区，然后拷贝到应用缓冲区的时候，上下文切换，read返回</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1660920560786-4749a126-91ce-4c53-8859-07a55a1cdbcd.png" alt="image.png" style="zoom:50%; " />
+
+<p>然后用户通过write方法发起调用，进行上下文切换，应用缓冲区的数据拷贝到socket写缓冲区（内核中），然后再拷贝到网卡中，上下文切换回用户态，write返回</p>
+<blockquote>
+<p>只有write过程的时候，对于用户程序来说，数据从用户空间到了内核空间的缓冲区，写操作就已经完成，至于什么时候写入到磁盘是有操作系统来决定的，除非应用程序显式调用了sync命令</p>
+</blockquote>
+<p>整个数据的传输过程都需要CPU亲自参与搬运，并且这个过程CPU并不能完成任何其他操作，同时，一次简单的IO就会产生4次上下文切换以及4次拷贝，就会对性能产生很大的影响</p>
+<h1 id="DMA技术"><a href="#DMA技术" class="headerlink" title="DMA技术"></a>DMA技术</h1><p>如果每次IO都需要CPU来完成的话，CPU会有大量的时间处于等待IO的状态，当大量数据或者系统资源紧张的时候，CPU难以应付所有事情。</p>
+<p>之后就有了DMA技术，也就是直接内存访问，direct memory access，也就是说，在进行IO设备和内存传输的时候，DMA接管数据拷贝的工作，如下图</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1660920817661-6ddf232d-fc94-458e-8b36-e896be323a75.png" alt="image.png" style="zoom:50%; " />
+
+<p>但是，可以看到，从用户空间到内核空间的数据传输还是需要CPU进行操作。并且CPU在这个过程中还需要高速DMA传输什么数据，传输数据的来源和终点（发送DMA中断），整块数据的传送是在DMA的控制器的控制下完成的。</p>
+<p>所以说，即使有了DMA的帮助，一次IO还是需要进行四次用户态与内核态的上下文转换，发生两次系统调用，以及四次数据拷贝，两次是DMA完成，两次是CPU完成</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1660921364325-29c35c07-1dd9-461d-96db-38005b2dad11.png" alt="image.png" style="zoom:50%; " />
+
+<h1 id="如何优化？"><a href="#如何优化？" class="headerlink" title="如何优化？"></a>如何优化？</h1><p>优化的两个方向：如何减少上下文转换的次数，以及数据拷贝的次数？</p>
+<p>对于前者，需要减少系统调用的次数，因为一次系统调用必定会发生两次上下文切换</p>
+<p>对于后者，就需要去掉一些没有必要的拷贝操作，例如读取文件并写入到网卡的文件传输过程中，在用户空间我们并不会对数据进行再加工，所以数据都可以不用拷贝到用户空间，用户缓冲区都没有必要存在</p>
+<h1 id="零拷贝技术"><a href="#零拷贝技术" class="headerlink" title="零拷贝技术"></a>零拷贝技术</h1><p>zero copy，并非完全没有数据拷贝的过程，只是减少上下文切换以及CPU拷贝的次数的具体实现技术</p>
+<h2 id="mmap-write"><a href="#mmap-write" class="headerlink" title="mmap+write"></a>mmap+write</h2><p><code>read()</code> 函数调用的过程中会把<strong>内核缓冲区的数据拷贝到用户缓冲区里</strong>，为了减少这一步开销，可以使用 <code>mmap()</code> 来替换 <code>read()</code> 系统调用函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">buf = mmap(file, len);</span><br><span class="line">write(sockfd, buf, len);</span><br></pre></td></tr></table></figure>
+<p>也就是说，通过 <code>mmap()</code> 可以实现内核缓冲区PageCache的数据与用户空间的映射，那么内核空间与用户空间就不需要再进行任何的数据拷贝操作</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1660921690702-17544cf0-17da-4316-8406-f3b171e25fb3.png" alt="image.png" style="zoom:50%; " />
+
+<ul>
+<li>应用进程调用了<code>mmap()</code>之后，DMA将数据拷贝到内核缓冲区中，然后应用程序与操作系统内核空间共享这个缓冲区</li>
+<li>应用系统再调用<code>write()</code>，操作系统就直接将内核缓冲区的数据拷贝到socker缓冲区中，一切都发生在内核态，由CPU搬运数据</li>
+<li>然后DMA再将内核socket缓冲区的数据拷贝到网卡中</li>
+</ul>
+<p><strong>以上的过程，我们减少了一次数据拷贝的过程，并且两次系统调用也会产生四次上下文切换</strong></p>
+<h3 id="mmap过程"><a href="#mmap过程" class="headerlink" title="mmap过程"></a>mmap过程</h3><img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1661003462567-303f1cee-fd66-4cb8-a4d7-457b1846e4b1.png" alt="image.png" style="zoom:50%; " />
+
+<ul>
+<li>进程在虚拟地址空间中为映射创建虚拟映射区域。</li>
+<li>内核把文件物理地址和进程虚拟地址进行映射。</li>
+<li>进程发起对这片映射空间的访问，引发缺页异常，然后进行文件内容到物理内存（主存）的拷贝。</li>
+</ul>
+<p>注意</p>
+<ul>
+<li>调用 mmap 后，只是在进程的虚拟空间中分配了一段空间，真实的物理地址还不会分配的。</li>
+<li>当进程第一次访问这段空间（当作内存一样），CPU 陷入 OS 内核执行异常处理。然后异常处理会在这个时间分配物理内存（PageCache），并用文件的内容填充这片内存，然后才返回进程的上下文，这时进程才会感知到这片内存里有数据。</li>
+<li>磁盘数据加载到 page cache 后，用户进 程可以通过指针操作直接读写 page cache，不再需要系统调用和内存拷贝。</li>
+</ul>
+<h2 id="sendfile"><a href="#sendfile" class="headerlink" title="sendfile"></a>sendfile</h2><p>在Linux内核版本2.1中，提供了一个专门发送文件的系统调用函数 <code>sendfile()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendfile</span><span class="params">(<span class="keyword">int</span> out_fd, <span class="keyword">int</span> in_fd, <span class="keyword">off_t</span> *offset, <span class="keyword">size_t</span> count)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>前两个参数是目的端和源断的文件描述符，后面的参数是偏移量以及复制数据的长度，返回实际复制数据的长度。</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1660922045302-4c430e14-00ae-4056-957f-a652353bfd57.png" alt="image.png" style="zoom:50%; " />
+
+<p>通过这一个系统调用，就可以完成read和write的操作，减少一次系统调用，也就减少了两次上下文的开销</p>
+<p>并且这个系统调用和mmap一样，不需要将数据再拷贝到用户内存中，所以这样只有两次上下文切换以及三次数据拷贝</p>
+<h2 id="SG-DMA-DMA-Scatter-Gather-分散-收集功能"><a href="#SG-DMA-DMA-Scatter-Gather-分散-收集功能" class="headerlink" title="SG-DMA(DMA Scatter/Gather 分散/收集功能)"></a>SG-DMA(DMA Scatter/Gather 分散/收集功能)</h2><p>在Linux系统中通过 <code>ethtool -k eth0 | grep scatter-gather</code> 查看网卡是否支持该特性，通过该特性可以进一步减少拷贝的次数</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1661000271372-a517051e-b3a1-4134-b481-559bb5ee2f9f.png" alt="image.png" style="zoom:50%; " />
+
+<p>对于支持该技术的系统， <code>sendfile()</code> 系统调用的过程如下</p>
+<ul>
+<li>进程切换到内核空间</li>
+<li>通过DMA拷贝将数据拷贝到内核缓冲区中</li>
+<li>将缓冲区描述符以及数据长度传给socket缓冲区</li>
+<li>SG-DMA控制器根据文件描述符和数据和数据长度，直接将内核缓存中的数据拷贝到网卡的缓冲区里</li>
+<li><code>sendfile()</code>任务完成后进程切换回用户空间</li>
+</ul>
+<p>MA gather和sendfile一样数据对用户空间不可见，而且需要硬件支持，同时输入文件描述符只能是文件</p>
+<p>但是对于整个过程，只进行了两次数据拷贝和一次上下文切换，并且由于全程没有通过CPU来搬运数据，也叫它零拷贝技术。</p>
+<h1 id="大文件传输的解决方式"><a href="#大文件传输的解决方式" class="headerlink" title="大文件传输的解决方式"></a>大文件传输的解决方式</h1><p>在传统的 <code>read()</code> 方法中，用户进程会在读取数据时堵塞，直到数据被拷贝到用户缓冲区的时候才返回，其中要经历数据从磁盘到内核缓冲区再到用户缓冲区的过程，这样就会面临堵塞的问题，在大文件传输的过程中更加明显</p>
+<p>所以可以使用异步IO来解决，</p>
+<img src="https://cdn.nlark.com/yuque/0/2022/png/1096029/1661001635774-20959752-3573-4b09-9c8c-58ff0194acb0.png" alt="image.png" style="zoom:50%; " />
+
+<ul>
+<li>用户进程发起读请求，然后内核发起IO请求，不等待数据就绪用户进程就返回，处理其他任务</li>
+<li>磁盘准备好数据后，向内核发出中断信号，内核读取数据<strong>使用DMA</strong>从磁盘缓冲区直接拷贝到用户缓冲区</li>
+<li>拷贝完成后，通知用户进程，用户并不阻塞在拷贝的过程</li>
+</ul>
+<p>整个过程并没有使用内核缓冲区，也就是PageCache，这样叫直接I/O（数据均直接在用户地址空间的缓冲区和磁盘之间直接进行传输，完全不需要页缓存的支持）</p>
+<p>所以在高并发的场景下，针对大文件的传输方式，应该使用异步IO+直接IO来替代零拷贝技术，虽然会失去PageCache带来的几点好处，但是会减少大文件带来的性能开销（额外拷贝，PageCache缺页）</p>
+<ul>
+<li>传输大文件的时候，使用「异步 I/O + 直接 I/O」；</li>
+<li>传输小文件的时候，则使用「零拷贝技术」；<h1 id="使用零拷贝技术的项目"><a href="#使用零拷贝技术的项目" class="headerlink" title="使用零拷贝技术的项目"></a>使用零拷贝技术的项目</h1></li>
+</ul>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><p>使用mmap+write持久化数据，发送数据使用sendfile</p>
+<h2 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h2><p>都是用mmap+write</p>
+<h2 id="NginX"><a href="#NginX" class="headerlink" title="NginX"></a>NginX</h2><p>sendfile<br>通过配置来根据文件大小使用不同的方式</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /video/ &#123; </span><br><span class="line">    <span class="attribute">sendfile</span> <span class="literal">on</span>; </span><br><span class="line">    <span class="attribute">aio</span> <span class="literal">on</span>; </span><br><span class="line">    <span class="attribute">directio</span> <span class="number">1024m</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当文件大小大于 directio 值后，使用异步 I/O + 直接 I/O，否则使用「零拷贝技术」</p>
+<h1 id="内核缓冲区PageCache"><a href="#内核缓冲区PageCache" class="headerlink" title="内核缓冲区PageCache"></a>内核缓冲区PageCache</h1><blockquote>
+<p>Page cache也叫页缓冲或文件缓冲，PageCache是建立在文件系统（Ex4）之上的，因此其缓存的是逻辑数据。Buffer cache是建立在块层之上的，因此其缓存的是物理辑数据。Linux大约在2.4.10之后，Page cache与Buffer cache合并了，因为之前的设计可能导致数据被缓存了两次，造成浪费<br>page是内存管理分配的基本单位，PageCache是多个page构成的，一个page的大小一般为4KB（使用<code> getconf PAGE_SIZE</code> 查看</p>
+</blockquote>
+<p>PageCache，磁盘高速缓冲</p>
+<p>在文件传输过程中，第一步都是将磁盘数据拷贝到【内核缓冲区】里，实际上也就是指磁盘高速缓存PageCache。上文的内核缓冲区其实也是指PageCache</p>
+<p>类似于内存数据到CPU中间的缓存(Cache Line的大小一般是64Byte)一样，PageCache可以理解为由磁盘到用户空间的缓存（PageCache存放在内核空间中）</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>缓存数据：由于读写磁盘的速度相比于读写内存的非常低，所以会通过DMA把磁盘的数据搬运到内存里，这样可以有部分数据通过读内存的方式替换读取磁盘，由于数据访问的空间局部性和时间局部性，读取磁盘数据的时候，可以优先在PageCache当中找</p>
+<p>减少磁盘工作量：内核调度算法会尽可能多的缓存IO请求到PageCache中，最后合并成一个更大的IO请求发送给磁盘</p>
+<p>预读功能：而且由于PageCache的预读功能，获取所需数据的时候会把周边的数据一起从磁盘中拷贝到PageCache中，连续读数据的时候，就不会每一次read请求就去磁盘中找，有些read请求的数据可能在之前的read请求就已经预读到了PageCache中，所以PageCache能够大大提高读写磁盘的性能</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>大文件读取：</p>
+<ul>
+<li>由于文件太大，热点的小文件无法充分使用到PageCache，装入-淘汰的频率很高，磁盘读写性能下降</li>
+<li>某些大文件数据并没有享受到缓存带来的好处，但是却要耗费DMA多拷贝到PageCache一次</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaolincoding/p/13719610.html">https://www.cnblogs.com/xiaolincoding/p/13719610.html</a> 零拷贝<br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1848933">https://cloud.tencent.com/developer/article/1848933</a> 页缓存<br><a target="_blank" rel="noopener" href="https://juejin.cn/post/7087543311048638477">https://juejin.cn/post/7087543311048638477</a> 更加详细和底层</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Cynyard Qiu</span>
+                    </p>
+                
+                
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/io/"># io</a>
+                    
+                        <a href="/tags/zero-copy/"># zero-copy</a>
+                    
+                        <a href="/tags/memory/"># memory</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2023/01/23/https-overview/">Https概述</a>
+            
+            
+            <a class="next" rel="next" href="/2022/12/03/hackers-and-painters/">黑客与画家读书笔记</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Cynyard Qiu | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a> 
+        
+        </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
