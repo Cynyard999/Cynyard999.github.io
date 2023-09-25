@@ -200,7 +200,90 @@
         </header>
 
         <div class="post-content">
-            <h1 id="首部校验和"><a href="#首部校验和" class="headerlink" title="首部校验和"></a>首部校验和</h1><p>保持首部和数据的校验和，以检测数据在传输过程中的变化</p>
+            <h1 id="TCP头部介绍"><a href="#TCP头部介绍" class="headerlink" title="TCP头部介绍"></a>TCP头部介绍</h1><img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1693816357586-f4758823-ed99-4db8-ae34-bbad4d9d080a.png" alt="image.png" style="zoom:50%; " />
+
+<ol>
+<li><strong>Source Port 源端口</strong></li>
+</ol>
+<p>发送方的端口</p>
+<ol start="2">
+<li><strong>Destination Port 目的端口</strong></li>
+</ol>
+<p>接收方的端口</p>
+<ol start="3">
+<li><strong>Sequence Number 序号</strong></li>
+</ol>
+<p>如果SYN标志位为1，代表是初始序列号，后续的第一个数据字节的序号为该序号+1<br>如果SYN标志位为0，代表是本报文段锁发送的数据的第一个字节的序号</p>
+<ol start="4">
+<li><strong>Acknowledgment Number 确认号</strong></li>
+</ol>
+<p>期望收到对方的下一个报文段的第一个字节的序号，也就是确认号之前的报文都收到了</p>
+<ol start="5">
+<li><strong>Header Length 首部长度</strong></li>
+</ol>
+<p>表明数据起始位置距离TCP报文的起始处的长度，单位是4 bytes</p>
+<ol start="6">
+<li><strong>Resv Reserve保留位</strong></li>
+</ol>
+<p>保留给之后使用</p>
+<ol start="7">
+<li><strong>Flags 标志位</strong></li>
+</ol>
+<ul>
+<li>CWR Congestion window reduced 拥塞队列减少</li>
+</ul>
+<p>代表收到了一个ECE的报文段，然后进行回应</p>
+<ul>
+<li>ECE Explicit Congestion Notification Echo 显式拥塞通知</li>
+</ul>
+<p>如果SYN为1，代表ECN打开<br>如果SYN不为1，在ip层会有一个congestion experienced字段，代表对sender的拥塞迹象的提醒</p>
+<ul>
+<li>URG 紧急</li>
+</ul>
+<p>紧急指针有效</p>
+<ul>
+<li>ACK 确认</li>
+</ul>
+<p>确认序号有效，除了第一个SYN，其他所有的tcp报文都应该有这个字段</p>
+<ul>
+<li>PSH 催促功能</li>
+</ul>
+<p>要求应用层尽快处理</p>
+<ul>
+<li>RST 重制</li>
+</ul>
+<p>TCP连接重置</p>
+<ul>
+<li>SYN 同步序列号</li>
+</ul>
+<p>只有双方发送的第一个报文段才会有这个标志</p>
+<ul>
+<li>FIN 结束</li>
+</ul>
+<p>发送方发送的最后一个报文段</p>
+<ul>
+<li>Window Size 窗口大小</li>
+</ul>
+<p>接收方的接受窗口大小，单位是window unit</p>
+<ul>
+<li>TCP Checksum 校验和</li>
+</ul>
+<p>用来进行错误校验，校验的范围包括首部和数据以及IP伪首部，伪首部包含了发送方接收方的ip地址、TCP的协议号以及tcp报文的长度（单位是byte）</p>
+<ul>
+<li>Urgent Pointer 紧急指针</li>
+</ul>
+<p>如果URG是1，则表示从序列号到最后一个紧急数据byte的偏移量，单位是byte</p>
+<ol start="8">
+<li><strong>Options 其他选项</strong></li>
+</ol>
+<p>每个option由三部分组成：类型(1 byte)，长度(1 byte)，数据(可变)，只有类型是必填的<br>option中包含的字段如下(from <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol">wiki pedia</a>)</p>
+<img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1695656992397-c61186d9-9b76-4ac5-905a-cec6de5f8d09.png" alt="image.png" style="zoom:50%; " />
+
+<ol start="9">
+<li><strong>Padding 对齐</strong></li>
+</ol>
+<p>全部是0，保证整个头部长度是32 bit的倍数</p>
+<h1 id="首部校验和"><a href="#首部校验和" class="headerlink" title="首部校验和"></a>首部校验和</h1><p>保持首部和数据的校验和，以检测数据在传输过程中的变化。使用Checksum字段</p>
 <h1 id="包编号和累计确认"><a href="#包编号和累计确认" class="headerlink" title="包编号和累计确认"></a>包编号和累计确认</h1><p><strong>可靠</strong>，对应到网络协议上，就是客户端每发送一个包，服务器端就应该有回复。如果一定时间没有回复，就会重新发送。</p>
 <p>在平常的交流或者工作安排中，如果只是收到序号为n的应答，发送序号n+1的包，这样的效率非常慢，一头没有处理完的话，另外一头就要干等着。所以<strong>当接收方在处理的时候，发送方也可以交代新的任务</strong><br>由于任务是按照顺序的，这样对于接收方就可以先来的先处理，在汇报的时候，直接汇报最近处理的任务就行了，就表示之前的都处理完了。</p>
 <p>对应到TCP协议中，为了保证顺序性，每一个包都有一个ID，在建立连接的时候就会商量起始的ID，然后后面按照ID一个个发送，接收方在接受完过后，就会应答最近接受的一个ID，表示之前的全部接受并接受了。这就叫做<strong>累计确认（cumulative acknowledgment）</strong></p>
@@ -229,6 +312,7 @@
 <li>还没有接收，但是也没办法接受的</li>
 </ul>
 <img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1676813589124-22655285-473a-4e2f-9554-464c7cb059e1.png" alt="image.png" style="zoom:50%; " />
+> 最左边那条线叫做LastByteRead
 
 <ul>
 <li>红色的部分就是MaxRcvBuffer，也就是能接受的最大缓存的量，固定值，<ul>
@@ -252,12 +336,16 @@
 <h3 id="SACK"><a href="#SACK" class="headerlink" title="SACK"></a>SACK</h3><p>在TCP头部加一个SACK的东西，接收方将本地将缓存的地图发送给发送方，发送方就能知道哪些需要立刻重传了</p>
 <h1 id="流量控制（照顾接收方，别人收不过来了）"><a href="#流量控制（照顾接收方，别人收不过来了）" class="headerlink" title="流量控制（照顾接收方，别人收不过来了）"></a>流量控制（照顾接收方，别人收不过来了）</h1><p>接收方在发送ACK的时候，也会携带一个窗口的大小<strong>rwnd</strong>，表示接收方的处理能力，在发送方控制<strong>AdvertisedWindow</strong>的大小。</p>
 <img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1677402512043-d9e57cbf-2a90-47e8-8208-914fa56a4443.png" alt="image.png" style="zoom:50%; " />
+> 发送方收到了4的确认，窗口大小为9
 
 <img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1677402555420-1a70e33e-0d2d-49e5-b3d2-fae5fcddf808.png" alt="image.png" style="zoom:50%; " />
+> 发送方把10，11，12，14都发了，收到了6的确认，窗口大小变为8，所以右边不动
 
 <img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1677402727354-cb331253-c4eb-46e4-a949-2ce8c074f05c.png" alt="image.png" style="zoom:50%; " />
+> 接收方的上层应用一直不处理，ACK的窗口一直变小，变成0
 
 <img src="https://cdn.nlark.com/yuque/0/2023/png/1096029/1677402767850-e87b467e-2eb7-49a7-afa6-2d83f70bd8cd.png" alt="image.png" style="zoom:50%; " />
+> 发送方收到14的确认后，窗口调整为0
 
 <p>如果接收方处理地确实慢，就可以设置为0，发送方将会暂停发送。然后发送方会定时发送窗口探测数据包，看是否有机会调整窗口的大小</p>
 <p>当接收方低能的时候，窗口变大了一点，不要太着急告诉发送方，等到窗口达到一定大小或者缓冲区一半为空才更新窗口</p>
